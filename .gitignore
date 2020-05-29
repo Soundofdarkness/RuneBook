@@ -10,3 +10,5 @@ docs/_site
 package-lock.json
 .idea/
 *.iml
+# Visual Studio 2015/2017 cache/options directory
+.vs/
