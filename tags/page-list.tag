@@ -48,7 +48,7 @@
           <img draggable="false" class="ui mini circular image" src=./img/runesReforged/perk/{(page.selectedPerkIds[index] && page.selectedPerkIds[index] !== -1) ? page.selectedPerkIds[index] : "qm"}.png>
         </div>
       </div>
-      <div class="middle aligned content"><i class={ page.isValid === false ? "red warning sign icon" : "" }></i> {key}</div>
+      <div class="middle aligned content" style="width: auto;"><i class={ page.isValid === false ? "red warning sign icon" : "" }></i> {key}</div>
     </div>
   </div>
 
