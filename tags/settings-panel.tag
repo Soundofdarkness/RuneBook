@@ -89,8 +89,8 @@
           <h4 class="ui horizontal divider header">
             <i class="red heart icon" style="padding-right:.5em;font-size:1em"></i><i1-8n>settings.about</i1-8n>
           </h4>
-          <div class="field">
-            <span><i1-8n>settings.madeby</i1-8n> <a href="https://github.com/OrangeNote/Runebook">OrangeNote</a></span>
+          <div class="inline field">
+            <label><i1-8n>settings.madeby</i1-8n> <a href="https://github.com/OrangeNote/Runebook">OrangeNote</a></label>
           </div>
         </div>
       </div>

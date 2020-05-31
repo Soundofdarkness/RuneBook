@@ -98,7 +98,7 @@ input::selection {
 	color: #191D24;
 }
 
-runebook .ui.horizontal.divider {
+.ui.horizontal.divider {
 	color: #191D24;
 }
 
@@ -123,6 +123,11 @@ runebook .ui.horizontal.divider {
 	border-right: 2px solid #BD9D5E !important;
 }
 
+.ui.attached.label {
+	background: #e8e8e8;
+	color: rgba(0,0,0,.6);
+}
+
 .ui.bottom.attached.tab.segment {
 	background: #ffffff;
 	border-color: #BD9D5E;
@@ -130,6 +135,10 @@ runebook .ui.horizontal.divider {
 
 chapters-segment .ui.active.inverted.dimmer {
 	background: #ffffff;
+}
+
+.ui.inverted.dimmer {
+	background-color: rgba(255,255,255,.85s);
 }
 
 page-list ::-webkit-scrollbar-thumb {
@@ -168,6 +177,10 @@ page-list ::-webkit-scrollbar-thumb:hover {
 
 .ui.segment .header {
 	color: #191D24;
+}
+
+.middle.aligned.content .ui.header {
+	color: rgba(0,0,0,.85);
 }
 
 .ui.segment .header .sub.header {
@@ -226,4 +239,42 @@ page-list .ui.button:active {
 	border-right: none !important;
 	border-top: 1px solid #BD9D5E !important;
 	box-shadow: none !important;
+}
+
+.ui.modal>.content {
+	background: rgb(255, 255, 255) !important;
+}
+
+/* ToDo: Remove this. Its fixed in later Semantic UI version */
+.ui.basic.orange.label {
+	color: #fff !important;
+}
+
+.ui.form .grouped.fields,
+.ui.toggle.checkbox input:checked~.box, .ui.toggle.checkbox input:checked~label,
+.ui.form .field>label,
+.ui.form .field .ui.input input,
+.ui.checkbox input:focus~label,
+.ui.selection.visible.dropdown>.text:not(.default),
+.ui.toggle.checkbox label {
+	color: rgba(0, 0, 0, 0.87) !important;
+}
+
+.ui.form .field .ui.input input {
+	background: rgb(255, 255, 255);
+}
+
+.ui.form .inline.field>.selection.dropdown, .ui.form .inline.field>.selection.dropdown.visible,
+.ui.selection.dropdown .menu>.item {
+	color: rgba(0,0,0,.87);
+	background: none;
+}
+
+.ui.dropdown .menu .selected.item, .ui.dropdown.selected {
+    background: rgba(0,0,0,.03);
+    color: rgba(0,0,0,.95);
+}
+
+.ui.dropdown .menu>.item:hover {
+	background: rgba(0, 0, 0, 0.05);
 }
