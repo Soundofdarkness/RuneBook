@@ -138,7 +138,7 @@ chapters-segment .ui.active.inverted.dimmer {
 }
 
 .ui.inverted.dimmer {
-	background-color: rgba(255,255,255,.85s);
+	background-color: rgba(255,255,255,.85);
 }
 
 page-list ::-webkit-scrollbar-thumb {
