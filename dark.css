@@ -229,6 +229,10 @@ page-list ::-webkit-scrollbar-thumb:hover {
 	background: #191D24 !important;
 }
 
+.ui.basic.orange.label {
+	background: #0c0e12 !important;
+}
+
 .ui.form .grouped.fields,
 .ui.toggle.checkbox input:checked~.box, .ui.toggle.checkbox input:checked~label,
 .ui.form .field>label,
