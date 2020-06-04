@@ -229,11 +229,6 @@ page-list ::-webkit-scrollbar-thumb:hover {
 	background: rgb(255, 255, 255) !important;
 }
 
-/* ToDo: Remove this. Its fixed in later Semantic UI version */
-.ui.basic.orange.label {
-	color: #fff !important;
-}
-
 .ui.form .grouped.fields,
 .ui.toggle.checkbox input:checked~.box, .ui.toggle.checkbox input:checked~label,
 .ui.form .field>label,
