@@ -187,35 +187,19 @@ page-list ::-webkit-scrollbar-thumb:hover {
 	color: #191D24;
 }
 
-current-page .ui.button {
+.ui.button {
 	background: #BD9D5E;
 }
 
-page-list .ui.button {
-	background: #BD9D5E;
-}
-
-current-page .ui.button:hover {
+.ui.button:hover {
 	background: #C7B185;
 }
 
-page-list .ui.button:hover {
-	background: #C7B185;
-}
-
-current-page .ui.button:focus {
+.ui.button:focus {
 	background: #BD9D5E;
 }
 
-page-list .ui.button:focus {
-	background: #BD9D5E;
-}
-
-current-page .ui.button:active {
-	background: #C7B185;
-}
-
-page-list .ui.button:active {
+.ui.button:active {
 	background: #C7B185;
 }
 
