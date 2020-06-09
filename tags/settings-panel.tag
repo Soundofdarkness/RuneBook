@@ -105,6 +105,8 @@
         inverted: true,
       });
 
+      $('.ui.dropdown.lang').dropdown();
+
       i18n.setLanguage(opts.configfile.lang);
       this.refs.lang.value = opts.configfile.lang;
       this.refs.pathdiscovery.checked = opts.configfile.pathdiscovery;
