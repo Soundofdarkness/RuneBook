@@ -261,3 +261,7 @@ page-list ::-webkit-scrollbar-thumb:hover {
 .ui.dropdown .menu>.item:hover {
 	background: rgba(0, 0, 0, 0.69) !important;
 }
+
+.bug.icon {
+    color: #d8cfbd !important;
+}

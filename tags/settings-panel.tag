@@ -3,7 +3,7 @@
     <div class="content">
       <div class="ui bottom attached label">
         RuneBook <a style="text-decoration: underline;" onclick="$('.changelog-modal').modal('show')">{ require('electron-is-dev') === true ? "DEV" : require('electron').remote.app.getVersion(); }</a>
-        <span style="float: right;"><a href="https://github.com/Soundofdarkness/RuneBook/issues" style="color: #555555;"><i class="bug icon"></i></a></span>
+        <span style="float: right;"><a href="https://github.com/Soundofdarkness/RuneBook/issues"><i class="bug icon"></i></a></span>
       </div>
       <div class="ui form">
         <div class="grouped fields">
