@@ -1,5 +1,4 @@
 var cheerio = require('cheerio');
-var rp = require('request-promise-native');
 
 const baseUrl = "https://www.metasrc.com/";
 const rankFilter = "?ranks=platinum,diamond,master,grandmaster,challenger";
@@ -114,21 +113,24 @@ async function getPage(requestUri, champInfo) {
         }
 
         var response = await getResponseFromUrl(modeUrlBase, "Error when determining the rune page");
-        var $ = cheerio.load(response.body);
+        if(response.ok){
+            var body = await response.text();
+            var $ = cheerio.load(body);
 
-        var ids = $('svg > image[data-xlink-href]').map((i, x) => getIdFromImageUrl($(x).attr('data-xlink-href'))).toArray();
+            var ids = $('svg > image[data-xlink-href]').map((i, x) => getIdFromImageUrl($(x).attr('data-xlink-href'))).toArray();
 
-        page['primaryStyleId'] = ids[0];
-        page.selectedPerkIds[0] = ids[1];
-        page.selectedPerkIds[1] = ids[2];
-        page.selectedPerkIds[2] = ids[3];
-        page.selectedPerkIds[3] = ids[4];
-        page['subStyleId'] = ids[5];
-        page.selectedPerkIds[4] = ids[6];
-        page.selectedPerkIds[5] = ids[7];
-        page.selectedPerkIds[6] = ids[8];
-        page.selectedPerkIds[7] = ids[9];
-        page.selectedPerkIds[8] = ids[10];
+            page['primaryStyleId'] = ids[0];
+            page.selectedPerkIds[0] = ids[1];
+            page.selectedPerkIds[1] = ids[2];
+            page.selectedPerkIds[2] = ids[3];
+            page.selectedPerkIds[3] = ids[4];
+            page['subStyleId'] = ids[5];
+            page.selectedPerkIds[4] = ids[6];
+            page.selectedPerkIds[5] = ids[7];
+            page.selectedPerkIds[6] = ids[8];
+            page.selectedPerkIds[7] = ids[9];
+            page.selectedPerkIds[8] = ids[10];
+        }
     } catch (e) {
         throw Error(e);
     }
@@ -155,21 +157,24 @@ async function getModeUrls(champion) {
 
     try {
         var response = await getResponseFromUrl(baseUrl, "Error when determining the modes");
-        var $ = cheerio.load(response.body);
+        if(response.ok){
+            var body = await response.text();
+            var $ = cheerio.load(body);
 
-        $('div[id=mode-nav] a[href]').each((index, elem) => {
-            var modeUrlBase = $(elem).attr('href');
+            $('div[id=mode-nav] a[href]').each((index, elem) => {
+                var modeUrlBase = $(elem).attr('href');
 
-            if (modesToIgnore.some(element => modeUrlBase.includes(element))) {
-                return;
-            }
+                if (modesToIgnore.some(element => modeUrlBase.includes(element))) {
+                    return;
+                }
 
-            // ToDo: create helper for combine pathes
-            var modeUrl = baseUrl + modeUrlBase + '/champion/' + champion;
-            modeUrl = modeUrl.replace(/([^:]\/)\/+/g, "$1");
+                // ToDo: create helper for combine pathes
+                var modeUrl = baseUrl + modeUrlBase + '/champion/' + champion;
+                modeUrl = modeUrl.replace(/([^:]\/)\/+/g, "$1");
 
-            returnVals.push(modeUrl);
-        });
+                returnVals.push(modeUrl);
+            });
+        }
     } catch (e) {
         throw Error(e);
     }
@@ -179,16 +184,7 @@ async function getModeUrls(champion) {
 
 // ToDo: maybe we should put this in a helper
 async function getResponseFromUrl(requestUri, errorMsg = '') {
-    var options = {
-        uri: requestUri,
-        resolveWithFullResponse: true
-    };
-
-    return await rp(options)
-        .then(function(response) {
-            return response;
-        })
-        .catch(function(err) {
+    return await fetch(requestUri).catch(function(err) {
             throw Error(errorMsg + " => " + err);
         });
 }
@@ -212,7 +208,11 @@ async function _getPages(champion, callback) {
 
         for (var i = 0, len = gameModeUrls.length; i < len; i++) {
             var response = await getResponseFromUrl(gameModeUrls[i], "Error when determining lanes");
-            var $ = cheerio.load(response.body);
+            if(!response.ok)
+                continue;
+
+            var body = await response.text();
+            var $ = cheerio.load(body);
 
             // Determine available versions
             let modeVersions = $('select[id=patch] > option').map(function() {

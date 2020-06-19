@@ -18,8 +18,6 @@ freezer.get().configfile.set({
 freezer.get().set("autochamp", settings.get("autochamp"));
 freezer.get().tab.set({ active: settings.get("lasttab"), loaded: true });
 
-var request = require('request');
-
 var {ipcRenderer} = require('electron');
 ipcRenderer.on('update:ready', (event, arg) => {
 	console.log("github new latest found")
@@ -81,23 +79,23 @@ freezer.on("changelog:ready", () => {
 	}
 });
 
-request('https://ddragon.leagueoflegends.com/api/versions.json', function (error, response, data) {
-	if(!error && response && response.statusCode == 200) {
-		var ver = JSON.parse(data);
+(async () => {
+	let response = await fetch('https://ddragon.leagueoflegends.com/api/versions.json');
+	if(response.ok) {
+		let ver = await response.json();
 		freezer.get().set('lolversions', ver);
 		freezer.emit("version:set", ver[0]);
 	}
 	else throw Error("Couldn't get ddragon api version");
-});
+})();
 
-freezer.on('version:set', (ver) => {
-	request('https://ddragon.leagueoflegends.com/cdn/'+ver+'/data/en_US/champion.json', function(error, response, data) {
-		if(!error && response && response.statusCode == 200){
-			freezer.get().set('championsinfo', JSON.parse(data).data);
-			freezer.emit("championsinfo:set");
-		}
-		else throw Error("Couldn't fetch champions.json from ddragon.")
-	});
+freezer.on('version:set', async (ver) => {
+	let response = await fetch('https://ddragon.leagueoflegends.com/cdn/'+ver+'/data/en_US/champion.json');
+	if(response.ok){
+		let jsonData = await response.json();
+		freezer.get().set('championsinfo', jsonData.data);
+		freezer.emit("championsinfo:set");
+	}else throw Error("Couldn't fetch champions.json from ddragon.");
 });
 
 freezer.on('api:connected', () => {

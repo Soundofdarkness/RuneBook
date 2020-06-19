@@ -4,10 +4,11 @@ const {autoUpdater} = require("electron-updater");
 const path = require('path');
 const url = require('url');
 const request = require('request');
+const fetch = require('node-fetch');
 const isDev = require('electron-is-dev');
 const windowStateKeeper = require("electron-window-state");
 
-require('electron-debug')({enabled: true});
+require('electron-debug')({enabled: isDev});
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -116,24 +117,19 @@ function createWindow() {
 app.on('ready', function () {
     createWindow();
 
-    win.webContents.on("did-finish-load", () => {
+    win.webContents.on("did-finish-load", async () => {
         if (isDev) return;
-        request({
-                url: 'https://api.github.com/repos/Soundofdarkness/RuneBook/releases/latest',
-                headers: {
-                    'User-Agent': 'request'
-                }
-            },
-            function (error, response, data) {
-                if (!error && response && response.statusCode === 200) {
-                    data = JSON.parse(data);
-                    latestv = data.tag_name.substring(1);
-                    if (latestv !== app.getVersion()) {
-                        win.webContents.send('update:ready');
-                    }
-                }
-                else throw Error("github api error");
-            })
+
+        let response = await fetch('https://api.github.com/repos/Soundofdarkness/RuneBook/releases/latest');
+
+        if(response.ok){
+            let responseJson = await response.json();
+            latestv = responseJson.tag_name.substring(1);
+            if (latestv !== app.getVersion()) {
+                win.webContents.send('update:ready');
+            }
+        }
+        else throw Error("github api error");
     });
 });
 
