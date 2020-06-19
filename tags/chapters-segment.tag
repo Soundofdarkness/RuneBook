@@ -1,5 +1,5 @@
 <chapters-segment>
-  <div class="ui container" style="flex: 1; display: flex; flex-direction: column">
+  <div class="ui container">
     
     <div class="ui horizontal divider"><i1-8n>chapters.title</i1-8n></div>
 
@@ -17,8 +17,8 @@
 
     </div>
 
-    <div style="flex: 1; display: flex; flex-direction: column;" class={ opts.tab.loaded ? "ui bottom attached tab segment active" : "ui bottom attached tab segment active" }>
-      <div if={ opts.tab.loaded } class={ opts.current.champion && !_.isEmpty(opts.current.champ_data.pages.toJS()) ? "ui one column centered grid" : "ui one column middle aligned centered grid" } style="flex: 1; height: 150px;">
+    <div id="pagelist-limiter" class={ opts.tab.loaded ? "ui bottom attached tab segment active" : "ui bottom attached tab segment active" }>
+      <div if={ opts.tab.loaded } id="grid-wrapper" class={ opts.current.champion && !_.isEmpty(opts.current.champ_data.pages.toJS()) ? "ui one column centered grid" : "ui one column middle aligned centered grid" }>
         <div class="row">
           <div class="column" style={ opts.current.champion && !_.isEmpty(opts.current.champ_data.pages.toJS()) ? "height: 100%;" : "" }>
             

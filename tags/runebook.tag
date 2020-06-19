@@ -21,22 +21,13 @@
 
   <select-champion champion={current.champion} autochamp={autochamp} champselect={champselect}></select-champion>
 
-  <chapters-segment style="flex: 1; display: flex; flex-direction: column;" current={current} lastuploadedpage={lastuploadedpage} session={session} connection={connection} tab={tab} plugins={plugins} lastbookmarkedpage={lastbookmarkedpage} lastsyncedpage={lastsyncedpage} tooltips={tooltips}></chapters-segment>
+  <chapters-segment current={current} lastuploadedpage={lastuploadedpage} session={session} connection={connection} tab={tab} plugins={plugins} lastbookmarkedpage={lastbookmarkedpage} lastsyncedpage={lastsyncedpage} tooltips={tooltips}></chapters-segment>
   <div style="margin-bottom: 20px;">
     <current-page connection={connection} session={session} current={current} tab={tab} plugins={plugins} tooltips={tooltips}></current-page>
   </div>
 
   <settings-panel configfile={configfile} updateready={updateready}></settings-panel>
   <changelog-modal></changelog-modal>
-
-  <style>
-    runebook {
-      display: flex;
-      min-height: 100vh;
-      flex-direction: column;
-    }
-
-  </style>
 
   <script>
     var remote;

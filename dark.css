@@ -105,6 +105,49 @@ body {
 	order: 3;
 }
 
+runebook {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+
+select-champion {
+	margin-bottom: -14px;
+}
+
+chapters-segment, 
+chapters-segment > .ui.container {
+	flex: 1; 
+	display: flex; 
+	flex-direction: column;
+}
+
+#pagelist-limiter {
+	flex: 1; 
+	display: flex; 
+	flex-direction: column; 
+	height: 150px; 
+	overflow: hidden;
+}
+
+#grid-wrapper {
+	flex: 1; 
+	overflow: auto;
+}
+
+#grid-wrapper::-webkit-scrollbar-track {
+    background: none !important;
+}
+
+#grid-wrapper::-webkit-scrollbar-thumb,
+#grid-wrapper::-webkit-scrollbar-thumb:window-inactive {
+    background: #71552B !important;
+}
+
+#grid-wrapper::-webkit-scrollbar-thumb:hover {
+    background: #BD9D5E !important;
+}
+
 .ui.secondary.pointing.menu {
 	background: #121212;
 	border-bottom: 1px solid #BD9D5E;
@@ -210,18 +253,7 @@ runebook .ui.horizontal.divider {
 
 chapters-segment .ui.active.inverted.dimmer {
 	background: #191D24;
-}
-
-page-list ::-webkit-scrollbar-thumb {
-    background: #71552B;
-}
-
-page-list ::-webkit-scrollbar-thumb:window-inactive {
-    background: #71552B;
-}
-
-page-list ::-webkit-scrollbar-thumb:hover {
-    background: #BD9D5E;
+	z-index: 0;
 }
 
 .ui.divided.list>.item {
@@ -260,6 +292,7 @@ page-list ::-webkit-scrollbar-thumb:hover {
 
 .ui.button {
 	background: #71552B;
+	margin-right: 10px;
 }
 
 .ui.button:hover {
@@ -294,4 +327,41 @@ page-list ::-webkit-scrollbar-thumb:hover {
 	border-right: none !important;
 	border-top: 1px solid #71552B !important;
 	box-shadow: none !important;
+}
+
+.changelog-modal > .header {
+	background: #191D24 !important;
+	color: #bd9d5e !important;
+	border-bottom-color: #bd9d5e !important;
+	text-align: center;
+}
+
+.changelog-modal > .content {
+	background: #191D24 !important;
+	color: #d8cfbd !important;
+}
+
+.changelog-modal > .content > img {
+	width: 66% !important;
+}
+
+.changelog-modal .ui.horizontal.divider {
+	color: #bd9d5e !important;
+}
+
+.changelog-modal .icon {
+	color: #d8cfbd !important;
+}
+
+.ui.modal .scrolling::-webkit-scrollbar-track {
+	background: none !important;
+}
+
+.ui.modal .scrolling::-webkit-scrollbar-thumb,
+.ui.modal .scrolling::-webkit-scrollbar-thumb:window-inactive {
+	background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.ui.modal .scrolling::-webkit-scrollbar-thumb:hover {
+	background: rgba(255, 255, 255, 0.15) !important;
 }

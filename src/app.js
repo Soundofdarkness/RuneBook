@@ -74,7 +74,7 @@ freezer.on("changelog:ready", () => {
 	var appVersion = require('electron').remote.app.getVersion();
 	console.log(appVersion, settings.get("changelogversion"))
 	if(settings.get("changelogversion") != appVersion) {
-		// freezer.get().set("showchangelog", true);
+		freezer.get().set("showchangelog", true);
 		settings.set("changelogversion", appVersion);
 	}
 });
