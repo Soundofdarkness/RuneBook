@@ -150,11 +150,7 @@
   resolved "https://registry.yarnpkg.com/@types/minimist/-/minimist-1.2.0.tgz#69a23a3ad29caf0097f06eda59b361ee2f0639f6"
   integrity sha1-aaI6OtKcrwCX8G7aWbNh7i8GOfY=
 
-"@types/node@*":
-  version "9.3.0"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-9.3.0.tgz#3a129cda7c4e5df2409702626892cb4b96546dd5"
-
-"@types/node@^12.0.12":
+"@types/node@*", "@types/node@^12.0.12":
   version "12.12.42"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-12.12.42.tgz#d0d1149336bd07540dd1ea576692829d575dec34"
   integrity sha512-R/9QdYFLL9dE9l5cWWzWIZByVGFd7lk7JVOJ7KD+E1SJ4gni7XJRLz9QTjyYQiHIqEAgku9VgxdLjMlhhUaAFg==
@@ -1752,10 +1748,10 @@ electron-window-state@^5.0.3:
     jsonfile "^4.0.0"
     mkdirp "^0.5.1"
 
-electron@^9.1.1:
-  version "9.2.0"
-  resolved "https://registry.yarnpkg.com/electron/-/electron-9.2.0.tgz#d9fc8c8c9e5109669c366bd7b9ba83b06095d7a4"
-  integrity sha512-4ecZ3rcGg//Gk4fAK3Jo61T+uh36JhU6HHR/PTujQqQiBw1g4tNPd4R2hGGth2d+7FkRIs5GdRNef7h64fQEMw==
+electron@^9.3.0:
+  version "9.3.0"
+  resolved "https://registry.yarnpkg.com/electron/-/electron-9.3.0.tgz#a4f3dc17f31acc6797eb4c2c4bd0d0e25efb939b"
+  integrity sha512-7zPLEZ+kOjVJqfawMQ0vVuZZRqvZIeiID3tbjjbVybbxXIlFMpZ2jogoh7PV3rLrtm+dKRfu7Qc4E7ob1d0FqQ==
   dependencies:
     "@electron/get" "^1.0.1"
     "@types/node" "^12.0.12"
@@ -3780,6 +3776,11 @@ map-visit@^1.0.0:
   integrity sha1-7Nyo8TFE5mDxtb1B8S80edmN+48=
   dependencies:
     object-visit "^1.0.0"
+
+marked@^1.1.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/marked/-/marked-1.2.0.tgz#7221ce2395fa6cf6d722e6f2871a32d3513c85ca"
+  integrity sha512-tiRxakgbNPBr301ihe/785NntvYyhxlqcL3YaC8CaxJQh7kiaEtrN9B/eK2I2943Yjkh5gw25chYFDQhOMCwMA==
 
 matcher@^2.1.0:
   version "2.1.0"
