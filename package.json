@@ -46,7 +46,7 @@
     "ws": "^7.4.2"
   },
   "devDependencies": {
-    "electron": "^11.1.1",
+    "electron": "^9.3.1",
     "electron-builder": "^22.9.1",
     "electron-packager": "^15.2.0",
     "xo": "^0.37.1"
