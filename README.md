@@ -9,7 +9,7 @@ Thanks to...
 - [@OrangeNote](https://github.com/OrangeNote) for creating the whole app up to this point
 - [@Fumi24](https://github.com/Fumi24) for being the source of inspiration for RuneBook, and for letting me know how to programmatically interact with the League API  
 - [@Pupix](https://github.com/Pupix), because RuneBook wouldn't exist without his tools  
-- @optizard for being my devoted tester  
+- @optizard for being my devoted tester 
 - all the users who helped me on [@molenzwiebel](https://github.com/molenzwiebel)'s Discord  
 
 # [License](https://github.com/Soundofdarkness/RuneBook/tree/master/LICENSE)
