@@ -473,3 +473,8 @@ span > i1-8n,
 .ui.modal .scrolling::-webkit-scrollbar-thumb:hover {
   background: var(--scrollbar-grey-hover) !important;
 }
+.itemlist {
+  text-align: center;
+  word-break: break-all;
+  justify-items: end;
+}
