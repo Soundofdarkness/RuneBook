@@ -45,5 +45,11 @@
   "settings.favautoupload.tooltip": "Lieblingsrunenseite automatisch in den LeagueClient laden nachdem den Champion gewählt wurde.",
   "currentpage.retry": "Wiederholen",
   "settings.about": "About",
-  "settings.madeby": "Made by"
+  "settings.madeby": "Made by",
+  "items.title": "Itemsets",
+  "items.start_items": "Start Items",
+  "items.core_items": "Wichtige Items",
+  "items.big_items": "Spätere Items",
+  "items.show_items": "Zeige Itemset an",
+  "items.upload_items": "Das Itemset in den LeagueClient laden"
 }
