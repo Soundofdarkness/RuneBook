@@ -143,6 +143,14 @@ freezer.on('version:set', (ver) => {
 		}
 		else throw Error("Couldn't fetch champions.json from ddragon.")
 	});
+	request('https://ddragon.leagueoflegends.com/cdn/11.23.1/data/en_US/item.json',
+    function (error, response, data) {
+      if (!error && response && response.statusCode == 200) {
+        freezer.get().set("itemsinfo", JSON.parse(data).data);
+        freezer.emit("itemsinfo:set");
+      } else throw Error("Couldn't fetch item.json from ddragon.");
+    }
+  );
 });
 
 freezer.on('api:connected', () => {
@@ -330,7 +338,11 @@ freezer.on('page:upload', (champion, pagename) => {
 		});
 	}
 });
-
+//upload items to client
+freezer.on("items:upload", (champ, itemset) => {
+  console.log(itemset);
+  forgeItemSet(champ, "aram", itemset.raw_data);
+});
 freezer.on('currentpage:download', () => {
 	var state = freezer.get();
 
@@ -481,6 +493,7 @@ console.log("config leaguepath", freezer.get().configfile.leaguepath)
 console.log("config pathdiscovery", freezer.get().configfile.pathdiscovery)
 const connector = new LCUConnector(freezer.get().configfile.pathdiscovery ? undefined : freezer.get().configfile.leaguepath);
 const api = require('./lcu-api');
+const { platform } = require('os');
 
 connector.on('connect', (data) => {
     console.log("client found");
@@ -601,5 +614,55 @@ function getPagesWrapper(plugin, champion, callback){
 
     // Return rune page
     return runePageMeta;
+}
+
+function forgeItemSet(champ, role, itemset) {
+  console.log(itemset);
+  if(platform == "linux"){
+	path = freezer.get().configfile.leaguepath.replace("LeagueClient.exe", "") + `Config/Champions/${champ}/Recommended/`;
+  }
+  else{
+	path = freezer.get().configfile.leaguepath.replace("LeagueClient.exe", "") + `Config\\Champions\\${champ}\\Recommended\\`;
+  }
+  const file = `${champ}_${role}.json`;
+  data = {
+    title: `${champ}_${role}`,
+    type: "custom",
+    map: "any",
+    mode: "any",
+    associatedMaps: [12],
+    associatedChampions: [parseInt(freezer.get().championsinfo[champ].key, 10)], //Champ ID
+    map: "any",
+    mode: "any",
+    preferredItemSlots: [],
+    sortrank: 1,
+    startedFrom: "blank",
+    blocks: [],
+  };
+  Object.keys(itemset).forEach((category, index) => {
+    data.blocks.push(createItemBlock(itemset[category], category));
+  });
+  console.log(JSON.stringify(data));
+  fs.writeFile(path + file, JSON.stringify(data), "UTF8", (err) => {
+    // Directory didn't exists so it must be created
+    fs.mkdir(path, { recursive: true }, () => {
+      fs.writeFile(path + file, JSON.stringify(data), "UTF8", (err) => {
+        // couldn't write file missing permissions?
+        if (err) console.log("Something is spocky about your pc");
+      });
+    });
+  });
+}
+// Creates a block object for the json file
+function createItemBlock(items, category) {
+  return {
+    type: category,
+    items: items.build.map((item) => {
+      return {
+        id: `${item}`,
+        count: 1,
+      };
+    }),
+  };
 }
 // #endregion
