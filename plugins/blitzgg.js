@@ -94,7 +94,10 @@ function getPage(runesJson, champInfo, gameMode) {
 
         // Determine selected perk ids
         const selectedPerkIds = removePerkIds(perksData).concat(statShards);
-
+        //gets an array for with items name for every category
+        const start_items = getItemArray(runesJson, "most_common_starting_items");
+        const core_items = getItemArray(runesJson, "most_common_core_builds");
+        const big_items = getItemArray(runesJson, "most_common_big_item_builds");
         // Return rune page
         return {
             name: `[${gameMode.name}] ${champInfo.name} ${runesJson.role}`.trim(),
@@ -107,13 +110,34 @@ function getPage(runesJson, champInfo, gameMode) {
                     name: plugin.name,
                     id: plugin.id
                 }
-            }
+            },
+            itemSet: {
+                start_items: start_items,
+                core_items: core_items,
+                big_items: big_items,
+                raw_data: {
+                start_items: runesJson["stats"]["most_common_starting_items"],
+                core_items: runesJson["stats"]["most_common_core_builds"],
+                big_items: runesJson["stats"]["most_common_big_item_builds"],
+                },
+            },
         };
     } catch (e) {
         throw Error(e);
     }
 }
-
+function getItemArray(runesJson, build) {
+  const itemsmap = freezer.get().itemsinfo;
+  if (runesJson["stats"][build].build != null) {
+    return runesJson["stats"][build].build.map((item) => {
+      try {
+        return itemsmap[item].name;
+      } catch (error) {
+        return "Unknown Item";
+      }
+    });
+  } else return [];
+}
 /**
  * Determines all possible rune pages for a given champion for the specified game mode.
  * 
