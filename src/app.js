@@ -1,5 +1,6 @@
 var settings = require('./settings');
 var freezer = require('./state');
+var fs = require('fs');
 const isDev = !require('electron').remote.require('electron').app.isPackaged;
 const { groupBy } = require('lodash');
 
