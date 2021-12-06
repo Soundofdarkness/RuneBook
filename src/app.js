@@ -144,7 +144,7 @@ freezer.on('version:set', (ver) => {
 		}
 		else throw Error("Couldn't fetch champions.json from ddragon.")
 	});
-	request('https://ddragon.leagueoflegends.com/cdn/11.23.1/data/en_US/item.json',
+	request('https://ddragon.leagueoflegends.com/cdn/'+ver+'/data/en_US/item.json',
     function (error, response, data) {
       if (!error && response && response.statusCode == 200) {
         freezer.get().set("itemsinfo", JSON.parse(data).data);
