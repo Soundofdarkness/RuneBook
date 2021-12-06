@@ -6,19 +6,19 @@
                 <div class="row">
                     <div class="column">
                         <div class="ui middle aligned relaxed divided runepage list"  style="overflow-x:hidden; overflow-y:auto;">
-                            <p class="ui horizontal divider">Start items</p>
+                            <p class="ui horizontal divider"><i1-8n>items.start_items</i1-8n></p>
                             <div class="item itemlist">
                                 <div each={item, key in opts.current.champ_data.pages[opts.page].itemSet.start_items}>
                                     {item}
                                 </div>
                             </div>
-                            <p class="ui horizontal divider">Core items</p>
+                            <p class="ui horizontal divider"><i1-8n>items.core_items</i1-8n></p>
                             <div class="item itemlist">
                                 <div class="item" each={item, key in opts.current.champ_data.pages[opts.page].itemSet.core_items}>
                                     {item}
                                 </div>
                             </div>
-                            <p class="ui horizontal divider">Big items</p>
+                            <p class="ui horizontal divider"><i1-8n>items.big_items</i1-8n></p>
                             <div class="item itemlist">
                                 <div class="item" each={item, key in opts.current.champ_data.pages[opts.page].itemSet.big_items}>
                                     {item}
