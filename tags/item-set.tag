@@ -6,6 +6,7 @@
                 <div class="row">
                     <div class="column">
                         <div class="ui middle aligned relaxed divided runepage list"  style="overflow-x:hidden; overflow-y:auto;">
+                            <div class="ui icon button" onclick={upload_items}><i1-8n>items.upload_items</i1-8n></div>
                             <p class="ui horizontal divider"><i1-8n>items.start_items</i1-8n></p>
                             <div class="item itemlist">
                                 <div each={item, key in opts.current.champ_data.pages[opts.page].itemSet.start_items}>
@@ -30,4 +31,9 @@
             </div>
         </div>
     </div>
+    <script>
+    upload_items(evt){
+        freezer.emit("items:upload", opts.current.champion, opts.current.champ_data.pages[opts.page].itemSet);
+    }
+    </script>
 </item-set>
