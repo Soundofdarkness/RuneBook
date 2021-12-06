@@ -640,7 +640,7 @@ function forgeItemSet(champ, role, itemset) {
     startedFrom: "blank",
     blocks: [],
   };
-  Object.keys(itemset).forEach((category, index) => {
+  Object.keys(itemset).forEach((category) => {
     data.blocks.push(createItemBlock(itemset[category], category));
   });
   console.log(JSON.stringify(data));
@@ -657,7 +657,7 @@ function forgeItemSet(champ, role, itemset) {
 // Creates a block object for the json file
 function createItemBlock(items, category) {
   return {
-    type: category,
+    type: category.replace('_', ' '),
     items: items.build.map((item) => {
       return {
         id: `${item}`,
