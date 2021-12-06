@@ -125,7 +125,6 @@
       idToOpen = '#' + key.split(" ").pop().replace(/[^a-zA-Z ]/g, '');// the regex is to remove special letters a side might include like e.g %
       console.log('Opening' + idToOpen);
       $(idToOpen).modal('show');
-      freezer.emit("items:upload", opts.current.champion, opts.current.champ_data.pages[key].itemSet);
     }
   </script>
 
