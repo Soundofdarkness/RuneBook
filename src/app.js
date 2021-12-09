@@ -647,7 +647,6 @@ function forgeItemSet(champ, role, map,itemset) {
   Object.keys(itemset).forEach((category) => {
     data.blocks.push(createItemBlock(itemset[category], category));
   });
-  console.log(JSON.stringify(data));
   fs.writeFile(path + file, JSON.stringify(data), "UTF8", (err) => {
     // Directory didn't exists so it must be created
     fs.mkdir(path, { recursive: true }, () => {
