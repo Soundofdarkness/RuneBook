@@ -33,7 +33,16 @@
     </div>
     <script>
     upload_items(evt){
-        freezer.emit("items:upload", opts.current.champion, opts.current.champ_data.pages[opts.page].itemSet);
+        // At least for blitzgg this gets the role
+        role = opts.page.split(" ").pop().replace(/[^a-zA-Z ]/g, '');
+        map = opts.page.split(" ")[0].replace(/[^a-zA-Z ]/g, ''); // either ARAM or RANKED if its ranked than the map is Summoner's Rift
+        // checks if its aram or not 
+        if (map = 'ARAM'){
+            freezer.emit("items:upload", opts.current.champion, 'any','aram', opts.current.champ_data.pages[opts.page].itemSet);
+        }
+        else{
+            freezer.emit("items:upload", opts.current.champion, role,"normal", opts.current.champ_data.pages[opts.page].itemSet);
+        }
     }
     </script>
 </item-set>
