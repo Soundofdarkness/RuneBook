@@ -618,7 +618,6 @@ function getPagesWrapper(plugin, champion, callback){
 }
 
 function forgeItemSet(champ, role, itemset) {
-  console.log(itemset);
   if(platform == "linux"){
 	path = freezer.get().configfile.leaguepath.replace("LeagueClient.exe", "") + `Config/Champions/${champ}/Recommended/`;
   }
