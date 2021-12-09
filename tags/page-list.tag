@@ -29,7 +29,9 @@
           <i class={ key == opts.current.champ_data.fav ? "heart icon" : "heart outline icon" } data-key={key}></i>
         </div>
         <div if={opts.tab.active == "blitzgg"} class="ui icon button" onclick={openItemsMenu} data-key={key} data-tooltip={ i18n.localise('items.show_items')} data-position="left center" data-inverted="">
-            <item-set current={opts.current} page={key} ></item-set>
+            <i class="boxes icon">
+              <item-set current={opts.current} page={key}></item-set>
+            </i>
         </div>
         <div if={ opts.plugins.local[opts.tab.active] && page.bookmark } class="ui icon button" data-key={key} data-tooltip={ i18n.localise('pagelist.syncfrom') + page.bookmark.remote.name} data-position="left center" data-inverted="" onclick={ syncBookmark }>
           <i class={ opts.lastsyncedpage.page == key && opts.lastsyncedpage.champion == opts.current.champion ? (opts.lastsyncedpage.loading ? "sync alternate icon loading" : "checkmark icon") : "sync alternate icon" } data-key={key}></i>
