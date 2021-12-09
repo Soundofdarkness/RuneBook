@@ -340,9 +340,9 @@ freezer.on('page:upload', (champion, pagename) => {
 	}
 });
 //upload items to client
-freezer.on("items:upload", (champ, itemset) => {
+freezer.on("items:upload", (champ, role, map,itemset) => {
   console.log(itemset);
-  forgeItemSet(champ, "aram", itemset.raw_data);
+  forgeItemSet(champ, role, map, itemset.raw_data);
 });
 freezer.on('currentpage:download', () => {
 	var state = freezer.get();
@@ -617,7 +617,12 @@ function getPagesWrapper(plugin, champion, callback){
     return runePageMeta;
 }
 
-function forgeItemSet(champ, role, itemset) {
+function forgeItemSet(champ, role, map,itemset) {
+  // https://static.developer.riotgames.com/docs/lol/maps.json
+  const mapNameIds ={
+	  aram: 12,
+	  normal:11
+  }
   if(platform == "linux"){
 	path = freezer.get().configfile.leaguepath.replace("LeagueClient.exe", "") + `Config/Champions/${champ}/Recommended/`;
   }
@@ -630,7 +635,7 @@ function forgeItemSet(champ, role, itemset) {
     type: "custom",
     map: "any",
     mode: "any",
-    associatedMaps: [12],
+    associatedMaps: [mapNameIds[map]],
     associatedChampions: [parseInt(freezer.get().championsinfo[champ].key, 10)], //Champ ID
     map: "any",
     mode: "any",
