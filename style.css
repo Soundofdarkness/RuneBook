@@ -475,6 +475,6 @@ span > i1-8n,
 }
 .itemlist {
   text-align: center;
-  word-break: break-all;
+  word-break: break-word;
   justify-items: end;
 }
