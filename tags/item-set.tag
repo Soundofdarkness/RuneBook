@@ -46,7 +46,13 @@
         }
     }
     delete_items(evt){
-
+        role = opts.page.split(" ").pop().replace(/[^a-zA-Z ]/g, '');
+        if(role == opts.current.champion) {
+        freezer.emit("items:delete", opts.current.champion, "any");
+        }
+        else{
+        freezer.emit("items:delete", opts.current.champion, role);
+        }
     }
     </script>
 </item-set>
