@@ -621,7 +621,13 @@ function getPagesWrapper(plugin, champion, callback){
     // Return rune page
     return runePageMeta;
 }
-
+/**
+ * Creates an item set for a given champ and writes it to a json file located in leaguepath/Config/Champions/{champ}/Recommended/
+ * @param {string} champ 
+ * @param {string} role The role the item set is intended for e.g support
+ * @param {string} map Either aram or normal
+ * @param {object} itemset The object that contains an array of items for every category (start, core, big)_items
+ */
 function forgeItemSet(champ, role, map,itemset) {
   // https://static.developer.riotgames.com/docs/lol/maps.json
   const mapNameIds ={
@@ -662,7 +668,13 @@ function forgeItemSet(champ, role, map,itemset) {
 	}
   });
 }
-// Creates a block object for the json file
+
+/**
+ * Creates a block object for the json file
+ * @param {object} items An object that contains an array of item ids
+ * @param {string} category Name of the category e.g. (start, core, big)_items 
+ * @returns An object that contains the type of the block and an array with item ids and their count
+ */
 function createItemBlock(items, category) {
   return {
     type: category.replace('_', ' '),
@@ -675,7 +687,11 @@ function createItemBlock(items, category) {
   };
 }
 
-// Delete item set file
+/**
+ * Delete item set file 
+ * @param {string} champ Name of the given champ
+ * @param {string} role Name of the intended role e.g support
+ */
 function deleteItemSet(champ, role){
 	const path = getPathForItemSet(champ);
 	const file = `${champ}_${role}.json`;
@@ -687,9 +703,13 @@ function deleteItemSet(champ, role){
 		})
 	})
 }
-
+/**
+ * 
+ * @param {string} champ Name of the give champ
+ * @returns The path to the directory for the given champ respecting specific platforms
+ */
 function getPathForItemSet(champ){
-	if(platform == "linux"){
+	if(platform != "win32"){
 		return freezer.get().configfile.leaguepath.replace("LeagueClient.exe", "") + `Config/Champions/${champ}/Recommended/`;
 	}
 	else{
