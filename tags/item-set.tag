@@ -5,9 +5,11 @@
             <div class="ui form"  style="height: 100%">
                 <div class="row">
                     <div class="column">
-                        <div class="ui middle aligned relaxed divided runepage list"  style="overflow-x:hidden; overflow-y:auto;">
+                        <div class="ui middle aligned relaxed divided runepage list">
+                            <div class="itembuttons">
                             <div class="ui icon button" onclick={upload_items}><i1-8n>items.upload_items</i1-8n></div>
                             <div class="ui icon button" onclick={delete_items}><i1-8n>items.delete_items</i1-8n></div>
+                            </div>
                             <p class="ui horizontal divider"><i1-8n>items.start_items</i1-8n></p>
                             <div class="item itemlist">
                                 <div each={item, key in opts.current.champ_data.pages[opts.page].itemSet.start_items} style={'width:' + 100 / opts.current.champ_data.pages[opts.page].itemSet.start_items.length + '%;'}>
