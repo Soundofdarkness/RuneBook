@@ -28,9 +28,9 @@
         <div if={ opts.plugins.local[opts.tab.active] && opts.favautoupload } class="ui icon button" onclick={ setFav } data-key={key} data-tooltip={ i18n.localise('pagelist.favautoupload')} data-position="left center" data-inverted="">
           <i class={ key == opts.current.champ_data.fav ? "heart icon" : "heart outline icon" } data-key={key}></i>
         </div>
-        <div if={opts.tab.active == "blitzgg"} class="ui icon button" onclick={openItemsMenu} data-tooltip={ i18n.localise('items.show_items')} data-position="left center" data-inverted="">
-            <i class="boxes icon" data-key={key} >
-             <item-set current={opts.current} page={key}></item-set>
+        <div if={opts.tab.active == "blitzgg"} class="ui icon button" onclick={openItemsMenu} data-key={key} data-tooltip={ i18n.localise('items.show_items')} data-position="left center" data-inverted="">
+            <i class="boxes icon" data-key={key}>
+              <item-set current={opts.current} page={key}></item-set>
              </i>
         </div>
         <div if={ opts.plugins.local[opts.tab.active] && page.bookmark } class="ui icon button" data-key={key} data-tooltip={ i18n.localise('pagelist.syncfrom') + page.bookmark.remote.name} data-position="left center" data-inverted="" onclick={ syncBookmark }>
