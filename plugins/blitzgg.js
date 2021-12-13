@@ -126,10 +126,16 @@ function getPage(runesJson, champInfo, gameMode) {
         throw Error(e);
     }
 }
-function getItemArray(runesJson, build) {
+/**
+ * A helper methode to get the name of an item per id
+ * @param {object} runesJson The object that contains the page and item set info
+ * @param {string} key The key to get from the object
+ * @returns An array of item names or an empty array if the key wasn't found
+ */
+function getItemArray(runesJson, key) {
   const itemsmap = freezer.get().itemsinfo;
-  if (runesJson["stats"][build].build != null) {
-    return runesJson["stats"][build].build.map((item) => {
+  if (runesJson["stats"][key].build != null) {
+    return runesJson["stats"][key].build.map((item) => {
       try {
         return itemsmap[item].name;
       } catch (error) {
