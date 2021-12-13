@@ -341,9 +341,14 @@ freezer.on('page:upload', (champion, pagename) => {
 });
 //upload items to client
 freezer.on("items:upload", (champ, role, map,itemset) => {
-  console.log(itemset);
   forgeItemSet(champ, role, map, itemset.raw_data);
 });
+
+//delete item set
+freezer.on("items:delete", (champ, role) => {
+  deleteItemSet(champ, role);
+});
+
 freezer.on('currentpage:download', () => {
 	var state = freezer.get();
 
@@ -623,12 +628,7 @@ function forgeItemSet(champ, role, map,itemset) {
 	  aram: 12,
 	  normal:11
   }
-  if(platform == "linux"){
-	path = freezer.get().configfile.leaguepath.replace("LeagueClient.exe", "") + `Config/Champions/${champ}/Recommended/`;
-  }
-  else{
-	path = freezer.get().configfile.leaguepath.replace("LeagueClient.exe", "") + `Config\\Champions\\${champ}\\Recommended\\`;
-  }
+  const path = getPathForItemSet(champ);
   const file = `${champ}_${role}.json`;
   data = {
     title: `${champ}_${role}`,
@@ -668,5 +668,27 @@ function createItemBlock(items, category) {
       };
     }),
   };
+}
+
+// Delete item set file
+function deleteItemSet(champ, role){
+	const path = getPathForItemSet(champ);
+	const file = `${champ}_${role}.json`;
+	fs.access(path + file, (err) => {
+		if(err) return;
+		fs.unlink(path + file, (err) =>{
+			if(err) console.log("there was an error!")
+			return;
+		})
+	})
+}
+
+function getPathForItemSet(champ){
+	if(platform == "linux"){
+		return freezer.get().configfile.leaguepath.replace("LeagueClient.exe", "") + `Config/Champions/${champ}/Recommended/`;
+	}
+	else{
+		return path = freezer.get().configfile.leaguepath.replace("LeagueClient.exe", "") + `Config\\Champions\\${champ}\\Recommended\\`;
+	}
 }
 // #endregion
