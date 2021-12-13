@@ -341,12 +341,12 @@ freezer.on('page:upload', (champion, pagename) => {
 });
 //upload items to client
 freezer.on("items:upload", (champ, role, map,itemset) => {
-  forgeItemSet(champ, role, map, itemset.raw_data);
+  forgeItemSet(champ.replace(/^\w/, (c) => c.toUpperCase()), role, map, itemset.raw_data);
 });
 
 //delete item set
 freezer.on("items:delete", (champ, role) => {
-  deleteItemSet(champ, role);
+  deleteItemSet(champ.replace(/^\w/, (c) => c.toUpperCase()), role);
 });
 
 freezer.on('currentpage:download', () => {
