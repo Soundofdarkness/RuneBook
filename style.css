@@ -478,3 +478,7 @@ span > i1-8n,
   word-break: break-word;
   justify-items: end;
 }
+.itembuttons {
+  display: flex;
+  justify-content: space-evenly;
+}
