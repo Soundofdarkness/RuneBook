@@ -51,5 +51,6 @@
   "items.core_items": "Wichtige Items",
   "items.big_items": "Spätere Items",
   "items.show_items": "Zeige Itemset an",
-  "items.upload_items": "Das Itemset in den LeagueClient laden"
+  "items.upload_items": "Das Itemset in den LeagueClient laden",
+  "items.delete_items": "Das Itemset löschen"
 }
