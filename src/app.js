@@ -631,7 +631,7 @@ function forgeItemSet(champ, role, map,itemset) {
   const path = getPathForItemSet(champ);
   const file = `${champ}_${role}.json`;
   data = {
-    title: `${champ}_${role}`,
+    title: `${champ} ${role}`,
     type: "custom",
     map: "any",
     mode: "any",
@@ -647,14 +647,19 @@ function forgeItemSet(champ, role, map,itemset) {
   Object.keys(itemset).forEach((category) => {
     data.blocks.push(createItemBlock(itemset[category], category));
   });
-  fs.writeFile(path + file, JSON.stringify(data), "UTF8", (err) => {
+  fs.access(path + file, JSON.stringify(data), "UTF8", (err) => {
     // Directory didn't exists so it must be created
-    fs.mkdir(path, { recursive: true }, () => {
-      fs.writeFile(path + file, JSON.stringify(data), "UTF8", (err) => {
-        // couldn't write file missing permissions?
-        if (err) console.log("Something is spocky about your pc");
-      });
-    });
+	if (err) {
+		fs.mkdir(path, { recursive: true }, () => {
+			fs.writeFile(path + file, JSON.stringify(data), "UTF8", (err) => {
+				if (err) console.Error(err);
+			});
+		});
+	} else{
+		fs.writeFile(path + file, JSON.stringify(data), "UTF8", (err) => {
+			if (err) console.Error(err);
+		});
+	}
   });
 }
 // Creates a block object for the json file
