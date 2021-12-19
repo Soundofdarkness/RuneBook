@@ -45,5 +45,12 @@
   "settings.favautoupload.tooltip": "Automatically upload favorite page to client after champion is locked in",
   "currentpage.retry": "Retry",
   "settings.about": "About",
-  "settings.madeby": "Made by"
+  "settings.madeby": "Made by",
+  "items.title": "Item sets",
+  "items.start_items": "Start items",
+  "items.core_items": "Core items",
+  "items.big_items": "Big items",
+  "items.show_items": "Show item set",
+  "items.upload_items": "Upload item set",
+  "items.delete_items": "Delete item set"
 }

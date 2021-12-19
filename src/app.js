@@ -1,5 +1,6 @@
 var settings = require('./settings');
 var freezer = require('./state');
+var fs = require('fs');
 const isDev = !require('electron').remote.require('electron').app.isPackaged;
 const { groupBy } = require('lodash');
 
@@ -143,6 +144,14 @@ freezer.on('version:set', (ver) => {
 		}
 		else throw Error("Couldn't fetch champions.json from ddragon.")
 	});
+	request('https://ddragon.leagueoflegends.com/cdn/'+ver+'/data/en_US/item.json',
+    function (error, response, data) {
+      if (!error && response && response.statusCode == 200) {
+        freezer.get().set("itemsinfo", JSON.parse(data).data);
+        freezer.emit("itemsinfo:set");
+      } else throw Error("Couldn't fetch item.json from ddragon.");
+    }
+  );
 });
 
 freezer.on('api:connected', () => {
@@ -330,6 +339,15 @@ freezer.on('page:upload', (champion, pagename) => {
 		});
 	}
 });
+//upload items to client
+freezer.on("items:upload", (champ, role, map,itemset) => {
+  forgeItemSet(champ.replace(/^\w/, (c) => c.toUpperCase()), role, map, itemset.raw_data);
+});
+
+//delete item set
+freezer.on("items:delete", (champ, role) => {
+  deleteItemSet(champ.replace(/^\w/, (c) => c.toUpperCase()), role);
+});
 
 freezer.on('currentpage:download', () => {
 	var state = freezer.get();
@@ -481,6 +499,7 @@ console.log("config leaguepath", freezer.get().configfile.leaguepath)
 console.log("config pathdiscovery", freezer.get().configfile.pathdiscovery)
 const connector = new LCUConnector(freezer.get().configfile.pathdiscovery ? undefined : freezer.get().configfile.leaguepath);
 const api = require('./lcu-api');
+const { platform } = require('os');
 
 connector.on('connect', (data) => {
     console.log("client found");
@@ -601,5 +620,100 @@ function getPagesWrapper(plugin, champion, callback){
 
     // Return rune page
     return runePageMeta;
+}
+/**
+ * Creates an item set for a given champ and writes it to a json file located in leaguepath/Config/Champions/{champ}/Recommended/
+ * @param {string} champ 
+ * @param {string} role The role the item set is intended for e.g support
+ * @param {string} map Either aram or normal
+ * @param {object} itemset The object that contains an array of items for every category (start, core, big)_items
+ */
+function forgeItemSet(champ, role, map,itemset) {
+  // https://static.developer.riotgames.com/docs/lol/maps.json
+  const mapNameIds ={
+	  aram: 12,
+	  normal:11
+  }
+  const path = getPathForItemSet(champ);
+  const file = `${champ}_${role}.json`;
+  data = {
+    title: `${champ} ${role}`,
+    type: "custom",
+    map: "any",
+    mode: "any",
+    associatedMaps: [mapNameIds[map]],
+    associatedChampions: [parseInt(freezer.get().championsinfo[champ].key, 10)], //Champ ID
+    map: "any",
+    mode: "any",
+    preferredItemSlots: [],
+    sortrank: 1,
+    startedFrom: "blank",
+    blocks: [],
+  };
+  Object.keys(itemset).forEach((category) => {
+    data.blocks.push(createItemBlock(itemset[category], category));
+  });
+  fs.access(path + file, JSON.stringify(data), (err) => {
+    // Directory didn't exists so it must be created
+	if (err) {
+		fs.mkdir(path, { recursive: true }, () => {
+			fs.writeFile(path + file, JSON.stringify(data), "UTF8", (err) => {
+				if (err) console.Error(err);
+			});
+		});
+	} else{
+		fs.writeFile(path + file, JSON.stringify(data), "UTF8", (err) => {
+			if (err) console.Error(err);
+		});
+	}
+  });
+}
+
+/**
+ * Creates a block object for the json file
+ * @param {object} items An object that contains an array of item ids
+ * @param {string} category Name of the category e.g. (start, core, big)_items 
+ * @returns An object that contains the type of the block and an array with item ids and their count
+ */
+function createItemBlock(items, category) {
+  return {
+    type: category.replace('_', ' '),
+    items: items.build.map((item) => {
+      return {
+        id: `${item}`,
+        count: 1,
+      };
+    }),
+  };
+}
+
+/**
+ * Delete item set file 
+ * @param {string} champ Name of the given champ
+ * @param {string} role Name of the intended role e.g support
+ */
+function deleteItemSet(champ, role){
+	const path = getPathForItemSet(champ);
+	const file = `${champ}_${role}.json`;
+	fs.access(path + file, (err) => {
+		if(err) return;
+		fs.unlink(path + file, (err) =>{
+			if(err) console.log("there was an error!")
+			return;
+		})
+	})
+}
+/**
+ * 
+ * @param {string} champ Name of the give champ
+ * @returns The path to the directory for the given champ respecting specific platforms
+ */
+function getPathForItemSet(champ){
+	if(platform != "win32"){
+		return freezer.get().configfile.leaguepath.replace("LeagueClient.exe", "") + `Config/Champions/${champ}/Recommended/`;
+	}
+	else{
+		return path = freezer.get().configfile.leaguepath.replace("LeagueClient.exe", "") + `Config\\Champions\\${champ}\\Recommended\\`;
+	}
 }
 // #endregion

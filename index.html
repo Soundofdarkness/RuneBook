@@ -1,65 +1,71 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-  <link rel="stylesheet" type="text/css" href="./node_modules/semantic-ui-css/semantic.min.css">
-  <link rel="stylesheet" type="text/css" href="style.css">
-  <style type="text/css">
-    img {
-      user-select: none;
-    }
-  </style>
-</head>
-<body>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="./node_modules/semantic-ui-css/semantic.min.css"
+    />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <style type="text/css">
+      img {
+        user-select: none;
+      }
+    </style>
+  </head>
+  <body>
+    <runebook></runebook>
 
-  <runebook></runebook>
+    <script>
+      window.$ = window.jQuery = require("jquery");
+      var riot = require("riot");
 
-  <script>
-    window.$ = window.jQuery = require('jquery');
-    var riot = require('riot');
+      // add new tag: markup
+      riot.tag("markup", "", function (opts) {
+        this.on("update", function () {
+          let markup = opts.data;
+          if (!markup) return;
+          let renderer = new marked.Renderer();
+          renderer.link = (href, title, text) =>
+            `<a target="_blank" href="${href}" title="${title}">${text}</a>`;
+          this.root.innerHTML = marked(markup, { renderer });
+        });
+      });
+    </script>
 
-    // add new tag: markup
-    riot.tag('markup', '', function(opts) {
-        this.on('update', function() {
-            let markup = opts.data;
-            if (!markup) return;
-            let renderer = new marked.Renderer();
-            renderer.link = ( href, title, text ) => `<a target="_blank" href="${ href }" title="${ title }">${ text }</a>`;
-            this.root.innerHTML = marked(markup, { renderer });
-        })
-    });
-  </script>
+    <script src="./node_modules/semantic-ui-css/semantic.min.js"></script>
+    <script src="./node_modules/riot-i18n/riot-i18n.js"></script>
+    <script src="./node_modules/marked/marked.min.js"></script>
+    <script type="text/javascript">
+      var freezer = require("./src/state");
 
-  <script src="./node_modules/semantic-ui-css/semantic.min.js"></script>
-  <script src="./node_modules/riot-i18n/riot-i18n.js"></script>
-  <script src="./node_modules/marked/marked.min.js"></script>
-  <script type="text/javascript">
+      var _ = require("lodash");
 
-    var freezer = require('./src/state');
+      const locales = require("./src/locales");
+      i18n.dictionary(locales);
 
-    var _ = require('lodash');
-    
-    const locales = require('./src/locales')
-    i18n.dictionary(locales);
+      require("./src/app");
 
-    require('./src/app');
+      require("./tags/runebook.tag");
+      require("./tags/select-champion.tag");
+      require("./tags/chapters-segment.tag");
+      require("./tags/page-list.tag");
+      require("./tags/item-set.tag");
+      require("./tags/current-page.tag");
+      require("./tags/connection-status.tag");
+      require("./tags/update-button.tag");
+      require("./tags/settings-panel.tag");
+      require("./tags/changelog-modal.tag");
 
-    require('./tags/runebook.tag');
-    require('./tags/select-champion.tag');
-    require('./tags/chapters-segment.tag');
-    require('./tags/page-list.tag');
-    require('./tags/current-page.tag');
-    require('./tags/connection-status.tag');
-    require('./tags/update-button.tag');
-    require('./tags/settings-panel.tag');
-    require('./tags/changelog-modal.tag');
-    
-    let selectedTheme = freezer.get().configfile.darktheme ? 'dark' : 'light';
-    document.documentElement.setAttribute('data-theme', selectedTheme);
-    
-    riot.mount('runebook', freezer.get());
-  </script>
+      let selectedTheme = freezer.get().configfile.darktheme ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", selectedTheme);
 
-</body>
+      riot.mount("runebook", freezer.get());
+    </script>
+  </body>
 </html>
