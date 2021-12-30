@@ -635,7 +635,7 @@ function forgeItemSet(champ, role, map,itemset) {
 	  normal:11
   }
   const path = getPathForItemSet(champ);
-  const file = `${champ}_${role}.json`;
+  const file = `${champ}.json`;
   data = {
     title: `${champ} ${role}`,
     type: "custom",
@@ -690,9 +690,9 @@ function createItemBlock(items, category) {
  * @param {string} champ Name of the given champ
  * @param {string} role Name of the intended role e.g support
  */
-function deleteItemSet(champ, role){
+function deleteItemSet(champ){
 	const path = getPathForItemSet(champ);
-	const file = `${champ}_${role}.json`;
+	const file = `${champ}.json`;
 	fs.access(path + file, (err) => {
 		if(err) return;
 		fs.unlink(path + file, (err) =>{
