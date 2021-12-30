@@ -643,8 +643,6 @@ function forgeItemSet(champ, role, map,itemset) {
     mode: "any",
     associatedMaps: [mapNameIds[map]],
     associatedChampions: [parseInt(freezer.get().championsinfo[champ].key, 10)], //Champ ID
-    map: "any",
-    mode: "any",
     preferredItemSlots: [],
     sortrank: 1,
     startedFrom: "blank",
