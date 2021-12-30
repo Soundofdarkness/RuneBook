@@ -653,7 +653,7 @@ function forgeItemSet(champ, role, map,itemset) {
   Object.keys(itemset).forEach((category) => {
     data.blocks.push(createItemBlock(itemset[category], category));
   });
-  fs.access(path + file, JSON.stringify(data), (err) => {
+  fs.access(path + file, (err) => {
     // Directory didn't exists so it must be created
 	if (err) {
 		fs.mkdir(path, { recursive: true }, () => {
