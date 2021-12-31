@@ -635,7 +635,7 @@ function forgeItemSet(champ, role, map,itemset) {
 	  normal:11
   }
   const path = getPathForItemSet(champ);
-  const file = `${champ}_${role}.json`;
+  const file = `${champ}.json`;
   data = {
     title: `${champ} ${role}`,
     type: "custom",
@@ -643,8 +643,6 @@ function forgeItemSet(champ, role, map,itemset) {
     mode: "any",
     associatedMaps: [mapNameIds[map]],
     associatedChampions: [parseInt(freezer.get().championsinfo[champ].key, 10)], //Champ ID
-    map: "any",
-    mode: "any",
     preferredItemSlots: [],
     sortrank: 1,
     startedFrom: "blank",
@@ -653,7 +651,7 @@ function forgeItemSet(champ, role, map,itemset) {
   Object.keys(itemset).forEach((category) => {
     data.blocks.push(createItemBlock(itemset[category], category));
   });
-  fs.access(path + file, JSON.stringify(data), (err) => {
+  fs.access(path + file, (err) => {
     // Directory didn't exists so it must be created
 	if (err) {
 		fs.mkdir(path, { recursive: true }, () => {
@@ -692,9 +690,9 @@ function createItemBlock(items, category) {
  * @param {string} champ Name of the given champ
  * @param {string} role Name of the intended role e.g support
  */
-function deleteItemSet(champ, role){
+function deleteItemSet(champ){
 	const path = getPathForItemSet(champ);
-	const file = `${champ}_${role}.json`;
+	const file = `${champ}.json`;
 	fs.access(path + file, (err) => {
 		if(err) return;
 		fs.unlink(path + file, (err) =>{
