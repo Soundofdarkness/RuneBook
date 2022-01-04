@@ -674,8 +674,10 @@ function forgeItemSet(champ, role, map,itemset) {
  * @returns An object that contains the type of the block and an array with item ids and their count
  */
 function createItemBlock(items, category) {
+  let categoryName = category.replace('_', ' ');
+  categoryName = categoryName.charAt(0).toUpperCase() + categoryName.slice(1);
   return {
-    type: category.replace('_', ' '),
+    type: categoryName,
     items: items.build.map((item) => {
       return {
         id: `${item}`,
