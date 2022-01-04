@@ -675,7 +675,8 @@ function forgeItemSet(champ, role, map,itemset) {
  */
 function createItemBlock(items, category) {
   let categoryName = category.replace('_', ' ');
-  categoryName = categoryName.charAt(0).toUpperCase() + categoryName.slice(1);
+  categoryName = categoryName.toLowerCase().split(' ')
+  .map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
   return {
     type: categoryName,
     items: items.build.map((item) => {
