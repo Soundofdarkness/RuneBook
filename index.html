@@ -33,7 +33,8 @@
           let renderer = new marked.Renderer();
           renderer.link = (href, title, text) =>
             `<a target="_blank" href="${href}" title="${title}">${text}</a>`;
-          this.root.innerHTML = marked(markup, { renderer });
+          marked.use({ renderer });
+          this.root.innerHTML = marked.parse(markup);
         });
       });
     </script>
