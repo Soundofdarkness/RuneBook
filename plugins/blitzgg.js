@@ -57,7 +57,7 @@ async function getChampionsJsonAsync(championId, gameMode, position = null, useA
                     return response;
             })
             .catch(function(err) {
-                if (err.statusCode === 403 || err.statusCode === 500)
+                if (err.statusCode === 400 || err.statusCode === 403 || err.statusCode === 404 || err.statusCode === 500)
                     console.log("JSON was not found => " + err);
                 else if (err.statusCode === 418) {
                     // If the altenative server has not been tried yet, do it. Otherwise only output error
