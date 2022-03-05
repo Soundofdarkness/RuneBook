@@ -1,4 +1,5 @@
 const cheerio = require('cheerio');
+const { toUpper } = require('lodash');
 const request = require('request');
 
 const urlChamp = 'http://www.op.gg/champions/';
@@ -28,7 +29,7 @@ function extractPages(html, champion, position,gameMode,src,callback) {
                 data["rune_pages"][i]["builds"][j]["primary_rune_ids"].forEach((id) => runeIds.push(id));
                 data["rune_pages"][i]["builds"][j]["secondary_rune_ids"].forEach((id) => runeIds.push(id));
                 data["rune_pages"][i]["builds"][j]["stat_mod_ids"].forEach((id) => runeIds.push(id));
-                callback(buildPluginObject((gameMode? "["+ gameMode + "]" : "[normal]" ) + champion +" "+ position +" Wins "+ data["rune_pages"][i]["builds"][j]["win"] +" "+ data["meta"]['runePages'].filter((page) => page["id"] ==data["rune_pages"][0]["builds"][0].primary_page_id )[0]["name"],src,i, j,runeIds, champion));
+                callback(buildPluginObject((gameMode? "["+ toUpper(gameMode) + "]" : "[NORMAL]" ) + champion +" "+ toUpper(position) +" Wins "+ data["rune_pages"][i]["builds"][j]["win"] +" "+ data["meta"]['runePages'].filter((page) => page["id"] ==data["rune_pages"][0]["builds"][0].primary_page_id )[0]["name"],src,i, j,runeIds, champion));
           } catch (error) {
             callback(undefined);
           }
