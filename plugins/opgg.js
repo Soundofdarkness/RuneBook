@@ -52,9 +52,11 @@ function _getPages(champion, callback) {
         if( page != undefined) runePages.pages[page.name] = page;
         callback(runePages);
         })
-      }
-    })
-  })
+      } else {
+      callback(runePages);
+      throw Error('rune page not loaded');
+    }});
+  });
   gameModes.forEach((mode) => {
     let url = urlModes +"/"+ mode+"/"+ champion + "/build"
     request.get(url, (error, response, html) =>{
@@ -63,9 +65,11 @@ function _getPages(champion, callback) {
         if( page != undefined) runePages.pages[page.name] = page;
         callback(runePages);
         })
-      }
-    })
-  })
+      }else {
+      callback(runePages);
+      throw Error('rune page not loaded');
+    }});
+  });
 }
 
 function buildPluginObject(name, src,pageIndex,buildIndex, runeIds,champion){
