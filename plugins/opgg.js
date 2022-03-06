@@ -1,4 +1,3 @@
-const cheerio = require('cheerio');
 const { toUpper } = require('lodash');
 const request = require('request');
 
