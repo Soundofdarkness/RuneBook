@@ -67,8 +67,11 @@ function _getPages(champion, callback) {
   });
 }
 function extractJSON(html){
-  const $ = cheerio.load(html);
-  return JSON.parse($("#__NEXT_DATA__")["0"]["children"]["0"]["data"])["props"]["pageProps"]["data"];
+  let str = html.slice(html.indexOf('>{') + 1, html.indexOf('}</script>') +1)
+  str = '{ "'+str.slice(str.indexOf('"props'), str.length -1).slice(str.indexOf("__N_SSP"), str.length -1).slice(str.indexOf('pageProps'), str.length - 1);
+  str = str.substring(0, str.indexOf('}},"page') + 1).slice(str.indexOf(':{')+1, str.length -1);
+  str = str.substring(0,str.indexOf('"_nextI18Next"') - 1);
+  return JSON.parse(str);
 }
 function buildPluginObject(name, src,pageIndex,buildIndex, runeIds,champion){
   return {
