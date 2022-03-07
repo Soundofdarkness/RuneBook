@@ -14,7 +14,7 @@
                             <div class="item item-list">
                                 <virtual each={item, key in opts.current.champ_data.pages[opts.page].itemSet.start_items}>
                                     <div class="item" style="width: 100%; height:100%;">
-                                        <img class="item-img" draggable="false"  src={'http://ddragon.leagueoflegends.com/cdn/12.5.1/img/item/'+ opts.current.champ_data.pages[opts.page].itemSet.raw_data.start_items.build[key]+'.png'}></img>
+                                        <img class="item-img" draggable="false"  src={'http://ddragon.leagueoflegends.com/cdn/'+freezer.get().lolversions[0] + '/img/item/'+ opts.current.champ_data.pages[opts.page].itemSet.raw_data.start_items.build[key]+'.png'}></img>
                                         <div style="height:  30px;">{item}</div>
                                         <div style="height: 15px;">Price: {freezer.get().itemsinfo[opts.current.champ_data.pages[opts.page].itemSet.raw_data.start_items.build[key]].gold.base}</div>
                                     </div>
@@ -24,7 +24,7 @@
                             <div class="item item-list">
                                 <virtual each={item, key in opts.current.champ_data.pages[opts.page].itemSet.core_items}>
                                     <div class="item"   style="width: 100%;  height:100%;">
-                                        <img class="item-img" draggable="false"  src={'http://ddragon.leagueoflegends.com/cdn/12.5.1/img/item/'+ opts.current.champ_data.pages[opts.page].itemSet.raw_data.core_items.build[key]+'.png'}></img>
+                                        <img class="item-img" draggable="false"  src={'http://ddragon.leagueoflegends.com/cdn/'+freezer.get().lolversions[0] +'/img/item/'+ opts.current.champ_data.pages[opts.page].itemSet.raw_data.core_items.build[key]+'.png'}></img>
                                         <div style="height:  30px;">{item}</div>
                                         <div style="height: 15px;">Price: {freezer.get().itemsinfo[opts.current.champ_data.pages[opts.page].itemSet.raw_data.core_items.build[key]].gold.base}</div>
                                     </div>
@@ -34,7 +34,7 @@
                             <div class="item item-list">
                                 <virtual each={item, key in opts.current.champ_data.pages[opts.page].itemSet.big_items}>
                                     <div class="item"  style="width: 100%; height:100%;">
-                                        <img height="64px" width="64px" class="item-img" draggable="false" src={'http://ddragon.leagueoflegends.com/cdn/12.5.1/img/item/'+ opts.current.champ_data.pages[opts.page].itemSet.raw_data.big_items.build[key]+'.png'}></img>
+                                        <img height="64px" width="64px" class="item-img" draggable="false" src={'http://ddragon.leagueoflegends.com/cdn/'+freezer.get().lolversions[0]+'/img/item/'+ opts.current.champ_data.pages[opts.page].itemSet.raw_data.big_items.build[key]+'.png'}></img>
                                         <div style="height: 30px;">{item}</div>
                                         <div style="height: 15px;">Price: {freezer.get().itemsinfo[opts.current.champ_data.pages[opts.page].itemSet.raw_data.big_items.build[key]].gold.base}</div>
                                     </div>
