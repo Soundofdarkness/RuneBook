@@ -6,12 +6,12 @@
                 <div class="row">
                     <div class="column">
                         <div class="ui middle aligned relaxed divided runepage list">
-                            <div class="itembuttons">
+                            <div class="item-buttons">
                             <div class="ui icon button" onclick={upload_items}><i1-8n>items.upload_items</i1-8n></div>
                             <div class="ui icon button" onclick={delete_items}><i1-8n>items.delete_items</i1-8n></div>
                             </div>
                             <p class="ui horizontal divider"><i1-8n>items.start_items</i1-8n></p>
-                            <div class="item itemlist">
+                            <div class="item item-list">
                                 <virtual each={item, key in opts.current.champ_data.pages[opts.page].itemSet.start_items}>
                                     <div class="item" style="width: 100%;">
                                         <img class="item-img" draggable="false"  src={'http://ddragon.leagueoflegends.com/cdn/12.5.1/img/item/'+ opts.current.champ_data.pages[opts.page].itemSet.raw_data.start_items.build[key]+'.png'}></img>
@@ -20,7 +20,7 @@
                                 </virtual>
                             </div>
                             <p class="ui horizontal divider"><i1-8n>items.core_items</i1-8n></p>
-                            <div class="item itemlist">
+                            <div class="item item-list">
                                 <virtual each={item, key in opts.current.champ_data.pages[opts.page].itemSet.core_items}>
                                     <div class="item"   style="width: 100%;">
                                         <img class="item-img" draggable="false"  src={'http://ddragon.leagueoflegends.com/cdn/12.5.1/img/item/'+ opts.current.champ_data.pages[opts.page].itemSet.raw_data.core_items.build[key]+'.png'}></img>
@@ -29,7 +29,7 @@
                                 </virtual>
                             </div>
                             <p class="ui horizontal divider"><i1-8n>items.big_items</i1-8n></p>
-                            <div class="item itemlist">
+                            <div class="item item-list">
                                 <virtual each={item, key in opts.current.champ_data.pages[opts.page].itemSet.big_items}>
                                     <div class="item"  style="width: 100%;">
                                         <img class="item-img" draggable="false" src={'http://ddragon.leagueoflegends.com/cdn/12.5.1/img/item/'+ opts.current.champ_data.pages[opts.page].itemSet.raw_data.big_items.build[key]+'.png'}></img>
