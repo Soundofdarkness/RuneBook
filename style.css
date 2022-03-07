@@ -482,3 +482,6 @@ span > i1-8n,
   display: flex;
   justify-content: space-evenly;
 }
+.item-img{
+  border-radius: 500rem;
+}

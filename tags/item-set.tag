@@ -12,21 +12,30 @@
                             </div>
                             <p class="ui horizontal divider"><i1-8n>items.start_items</i1-8n></p>
                             <div class="item itemlist">
-                                <div each={item, key in opts.current.champ_data.pages[opts.page].itemSet.start_items} style={'width:' + 100 / opts.current.champ_data.pages[opts.page].itemSet.start_items.length + '%;'}>
-                                    {item}
-                                </div>
+                                <virtual each={item, key in opts.current.champ_data.pages[opts.page].itemSet.start_items}>
+                                    <div class="item" style="width: 100%;">
+                                        <img class="item-img" draggable="false"  src={'http://ddragon.leagueoflegends.com/cdn/12.5.1/img/item/'+ opts.current.champ_data.pages[opts.page].itemSet.raw_data.start_items.build[key]+'.png'}></img>
+                                        <div>{item}</div>
+                                    </div>
+                                </virtual>
                             </div>
                             <p class="ui horizontal divider"><i1-8n>items.core_items</i1-8n></p>
                             <div class="item itemlist">
-                                <div class="item" each={item, key in opts.current.champ_data.pages[opts.page].itemSet.core_items} style={'width:' + 100 / opts.current.champ_data.pages[opts.page].itemSet.core_items.length + '%;'}>
-                                    {item}
-                                </div>
+                                <virtual each={item, key in opts.current.champ_data.pages[opts.page].itemSet.core_items}>
+                                    <div class="item"   style="width: 100%;">
+                                        <img class="item-img" draggable="false"  src={'http://ddragon.leagueoflegends.com/cdn/12.5.1/img/item/'+ opts.current.champ_data.pages[opts.page].itemSet.raw_data.core_items.build[key]+'.png'}></img>
+                                        <div>{item}</div>
+                                    </div>
+                                </virtual>
                             </div>
                             <p class="ui horizontal divider"><i1-8n>items.big_items</i1-8n></p>
                             <div class="item itemlist">
-                                <div class="item" each={item, key in opts.current.champ_data.pages[opts.page].itemSet.big_items} style={'width:' + 100 / opts.current.champ_data.pages[opts.page].itemSet.big_items.length + '%;'}>
-                                    {item}
-                                </div>
+                                <virtual each={item, key in opts.current.champ_data.pages[opts.page].itemSet.big_items}>
+                                    <div class="item"  style="width: 100%;">
+                                        <img class="item-img" draggable="false" src={'http://ddragon.leagueoflegends.com/cdn/12.5.1/img/item/'+ opts.current.champ_data.pages[opts.page].itemSet.raw_data.big_items.build[key]+'.png'}></img>
+                                        <div>{item}</div>
+                                    </div>
+                                </virtual>
                             </div>
                         </div>
                     </div>
