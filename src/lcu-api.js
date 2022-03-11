@@ -6,11 +6,12 @@ var conn_data = null;
 
 // messages we listen to
 var message_filter = [
-    '/lol-champ-select/v1/session:Delete',
+	'/lol-champ-select/v1/session:Delete',
 	'/lol-champ-select/v1/session:Update',
 	'/lol-perks/v1/currentpage:Update',
 	'/lol-perks/v1/perks:Update',
-	'/lol-summoner/v1/current-summoner:Update'
+	'/lol-summoner/v1/current-summoner:Update',
+	'/lol-gameflow/v1/gameflow-phase:Update'
 ];
 
 function bind(data) {
@@ -33,18 +34,18 @@ function bind(data) {
 		var res;
 		try {
 			res = JSON.parse(msg);
-		} catch(e) {
+		} catch (e) {
 			console.log(e);
 		}
-		if(res[0] === 0) {
+		if (res[0] === 0) {
 			console.log("connected", res);
 			freezer.emit(`api:connected`);
 		}
-		if(res[1] == "OnJsonApiEvent") {
+		if (res[1] == "OnJsonApiEvent") {
 			var evt = res[2];
 			var url = `${evt.uri}:${evt.eventType}`;
 
-			if (message_filter.includes(url)){
+			if (message_filter.includes(url)) {
 				//console.log(url);
 				freezer.emit(url, evt.data);
 			}
@@ -62,10 +63,10 @@ function destroy() {
 }
 
 var methods = {};
-["post", "put", "get", "del"].forEach(function(method) {
-	methods[method] = function(endpoint, body) {
-		return new Promise(resolve => {	
-			if(ws == null)
+["post", "put", "get", "del"].forEach(function (method) {
+	methods[method] = function (endpoint, body) {
+		return new Promise(resolve => {
+			if (ws == null)
 				return;
 
 			var options = {
@@ -94,4 +95,4 @@ var methods = {};
 	};
 });
 
-module.exports = Object.assign({bind, destroy}, methods);
+module.exports = Object.assign({ bind, destroy }, methods);
