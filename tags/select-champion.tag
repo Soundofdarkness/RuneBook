@@ -41,7 +41,7 @@
   </div>
   
   <div class="ui popup" style="width: 250px;"><i1-8n>champion.autopick.tooltip</i1-8n></div>
-
+  <div class="ui popup autoaccept" style="width: 250px;"><i1-8n>game.autoaccept.tooltip</i1-8n></div>
   <style>
     .tiny-ring {
       width: 84px;
@@ -113,6 +113,14 @@
           }
         });
 
+      $("#autoaccept-label").popup({
+          position: "bottom right",
+          popup: '.ui.popup.autoaccept',
+          delay: {
+              show: 800,
+              hide: 0
+          }
+      });
       if(freezer.get().autochamp) {
         $('#autochamp').checkbox("check");
       }
