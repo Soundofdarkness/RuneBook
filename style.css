@@ -215,6 +215,27 @@ chapters-segment .ui.active.inverted.dimmer {
   background: #d8cfbd !important;
 }
 
+/*** Auto accept ***/
+
+#autoaccept-label span {
+    color: var(--plain - text);
+}
+
+#autoaccept-label::before {
+    background: var(--bg - accent - 2)!important;
+    border: 2px solid var(--primary);
+}
+
+.ui.toggle.checkbox.checked #autoaccept-label::before {
+    background: var(--bg)!important;
+    border: 2px solid var(--highlight);
+}
+
+#autoaccept-label::after {
+    background: #d8cfbd!important;
+}
+
+
 input {
   background: var(--bg-accent-2) !important;
   color: var(--plain-text) !important;
