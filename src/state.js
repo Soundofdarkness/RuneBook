@@ -67,7 +67,7 @@ var state = {
 		favUploaded: false,
 	},
 	autochamp: false,
-
+	autoaccept: false,
 	tooltips: {
 		rune: null
 	},
