@@ -30,7 +30,7 @@
             </div>
             <div class="ui toggle checkbox" id="autoaccept">
               <input type="checkbox" tabindex="0">
-              <label id="autoaccept-label"<i1-8n>game.autoaccept</i1-8n></label>
+              <label id="autoaccept-label"><i1-8n>game.autoaccept</i1-8n></label>
             </div>
           </div>
 
