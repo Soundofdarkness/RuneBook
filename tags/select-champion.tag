@@ -40,7 +40,7 @@
     </div>
   </div>
   
-  <div class="ui popup" style="width: 250px;"><i1-8n>champion.autopick.tooltip</i1-8n></div>
+  <div class="ui popup autochamp" style="width: 250px;"><i1-8n>champion.autopick.tooltip</i1-8n></div>
   <div class="ui popup autoaccept" style="width: 250px;"><i1-8n>game.autoaccept.tooltip</i1-8n></div>
   <style>
     .tiny-ring {
@@ -96,7 +96,7 @@
 
       $("#autochamp-label").popup({
         position: "bottom right",
-        popup: '.ui.popup',
+        popup: '.ui.popup.autochamp',
         delay: {
           show: 800,
           hide: 0
