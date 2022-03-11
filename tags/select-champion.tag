@@ -111,13 +111,24 @@
           onUnchecked: () => {
             freezer.emit("autochamp:disable");
           }
-        })
-      ;
+        });
 
       if(freezer.get().autochamp) {
         $('#autochamp').checkbox("check");
       }
-
+      
+      $('#autoaccept')
+        .checkbox({
+          onChecked: () => {
+            freezer.emit("autoaccept:enable");
+          },
+          onUnchecked: () => {
+             freezer.emit("autoaccept:disable");
+          }
+      });
+      if(freezer.get().autoaccept) {
+        $('#autoaccept').checkbox("check");
+      }
       // Force event again, in case api connection is slower than ddragon requests
       freezer.on("api:connected", () => {
         if(freezer.get().autochamp) {
