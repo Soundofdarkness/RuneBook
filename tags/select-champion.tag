@@ -28,6 +28,10 @@
               <input type="checkbox" tabindex="0" class="hidden">
               <label id="autochamp-label"><i1-8n>champion.autopick</i1-8n></label>
             </div>
+            <div class="ui toggle checkbox" id="autoaccept">
+              <input type="checkbox" tabindex="0">
+              <label id="autoaccept-label"<i1-8n>game.autoaccept</i1-8n></label>
+            </div>
           </div>
 
         </div>
