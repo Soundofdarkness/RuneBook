@@ -10,22 +10,31 @@
                             <div class="ui icon button" onclick={upload_items}><i1-8n>items.upload_items</i1-8n></div>
                             <div class="ui icon button" onclick={delete_items}><i1-8n>items.delete_items</i1-8n></div>
                             </div>
-                            <p class="ui horizontal divider"><i1-8n>items.start_items</i1-8n></p>
-                            <div class="item itemlist">
-                                <div each={item, key in opts.current.champ_data.pages[opts.page].itemSet.start_items} style={'width:' + 100 / opts.current.champ_data.pages[opts.page].itemSet.start_items.length + '%;'}>
-                                    {item}
+                            <p class="ui horizontal divider"><i1-8n>items.start_items</i1-8n></p>\
+                              <div class="item itemlist">
+                                <div class="item" each={item, key in opts.current.champ_data.pages[opts.page].itemSet.start_items} style={'width:' + 100 / opts.current.champ_data.pages[opts.page].itemSet.start_items.length + '%;'}>
+                                        {item}
+                                    </div>
+                                <div class="item" if={opts.current.champ_data.pages[opts.page].itemSet.start_items.length == 0} style="width: 100%;">
+                                    <P style="text-align: center;"><i1-8n>items.emptyCategory</i1-8n></P>
                                 </div>
                             </div>
                             <p class="ui horizontal divider"><i1-8n>items.core_items</i1-8n></p>
                             <div class="item itemlist">
-                                <div class="item" each={item, key in opts.current.champ_data.pages[opts.page].itemSet.core_items} style={'width:' + 100 / opts.current.champ_data.pages[opts.page].itemSet.core_items.length + '%;'}>
+                                <div class="item"  each={item, key in opts.current.champ_data.pages[opts.page].itemSet.core_items} style={'width:' + 100 / opts.current.champ_data.pages[opts.page].itemSet.core_items.length + '%;'}>
                                     {item}
+                                </div>
+                                <div class="item" if={opts.current.champ_data.pages[opts.page].itemSet.core_items.length == 0} style="width: 100%;">
+                                    <P style="text-align: center;"><i1-8n>items.emptyCategory</i1-8n></P>
                                 </div>
                             </div>
                             <p class="ui horizontal divider"><i1-8n>items.big_items</i1-8n></p>
                             <div class="item itemlist">
                                 <div class="item" each={item, key in opts.current.champ_data.pages[opts.page].itemSet.big_items} style={'width:' + 100 / opts.current.champ_data.pages[opts.page].itemSet.big_items.length + '%;'}>
                                     {item}
+                                </div>
+                                <div class="item" if={opts.current.champ_data.pages[opts.page].itemSet.big_items.length == 0} style="width: 100%;">
+                                    <P style="text-align: center;"><i1-8n>items.emptyCategory</i1-8n></P>
                                 </div>
                             </div>
                         </div>

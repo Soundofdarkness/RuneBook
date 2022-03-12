@@ -52,5 +52,6 @@
   "items.big_items": "Spätere Items",
   "items.show_items": "Zeige Itemset an",
   "items.upload_items": "Das Itemset in den LeagueClient laden",
-  "items.delete_items": "Das Itemset löschen"
+  "items.delete_items": "Das Itemset löschen",
+  "items.emptyCategory": "Es sieht so aus als gäbe es keine Items in dieser Kategorie"
 }

@@ -649,7 +649,8 @@ function forgeItemSet(champ, role, map,itemset) {
     blocks: [],
   };
   Object.keys(itemset).forEach((category) => {
-    data.blocks.push(createItemBlock(itemset[category], category));
+	let block = createItemBlock(itemset[category], category);
+	if(block != null) data.blocks.push(block); // skips the block if its empty instead of throwing an exception
   });
   fs.access(path + file, (err) => {
     // Directory didn't exists so it must be created
@@ -671,9 +672,11 @@ function forgeItemSet(champ, role, map,itemset) {
  * Creates a block object for the json file
  * @param {object} items An object that contains an array of item ids
  * @param {string} category Name of the category e.g. (start, core, big)_items 
- * @returns An object that contains the type of the block and an array with item ids and their count
+ * @returns An object that contains the type of the block and an array with item ids and their count or null if there weren't items in the array
  */
 function createItemBlock(items, category) {
+  // Checks if any the of the given params is null/undefined
+  if(items.build == undefined || category ==undefined) return null;
   let categoryName = category.replace('_', ' ');
   categoryName = categoryName.toLowerCase().split(' ')
   .map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
@@ -705,7 +708,7 @@ function deleteItemSet(champ){
 	})
 }
 /**
- * 
+ * Gets the location for the file to be saved at
  * @param {string} champ Name of the give champ
  * @returns The path to the directory for the given champ respecting specific platforms
  */
