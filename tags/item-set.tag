@@ -18,6 +18,9 @@
                                         <div style="height: 30px;">{freezer.get().itemsinfo[item].name}</div>
                                         <div style="height: 15px;">Price: {freezer.get().itemsinfo[item].gold.base}</div>
                                     </div>
+                                    <div class="item" if={opts.current.champ_data.pages[opts.page].itemSet.start_items.build.length == 0} style="width: 100%;">
+                                        <P style="text-align: center;"><i1-8n>items.emptyCategory</i1-8n></P>
+                                    </div>
                                 </virtual>
                             </div>
                             <p class="ui horizontal divider"><i1-8n>items.core_items</i1-8n></p>
@@ -28,6 +31,9 @@
                                         <div style="height: 30px;">{freezer.get().itemsinfo[item].name}</div>
                                         <div style="height: 15px;">Price: {freezer.get().itemsinfo[item].gold.base}</div>
                                     </div>
+                                    <div class="item" if={opts.current.champ_data.pages[opts.page].itemSet.core_items.build.length == 0} style="width: 100%;">
+                                        <P style="text-align: center;"><i1-8n>items.emptyCategory</i1-8n></P>
+                                    </div>
                                 </virtual>
                             </div>
                             <p class="ui horizontal divider"><i1-8n>items.big_items</i1-8n></p>
@@ -37,6 +43,9 @@
                                         <img height="64px" width="64px" class="item-img" draggable="false" src={'http://ddragon.leagueoflegends.com/cdn/'+freezer.get().lolversions[0]+'/img/item/'+ item+'.png'}></img>
                                         <div style="height: 30px;">{freezer.get().itemsinfo[item].name}</div>
                                         <div style="height: 15px;">Price: {freezer.get().itemsinfo[item].gold.base}</div>
+                                    </div>
+                                    <div class="item" if={opts.current.champ_data.pages[opts.page].itemSet.big_items.build.length == 0} style="width: 100%;">
+                                        <P style="text-align: center;"><i1-8n>items.emptyCategory</i1-8n></P>
                                     </div>
                                 </virtual>
                             </div>

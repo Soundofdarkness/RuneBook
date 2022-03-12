@@ -1,127 +1,96 @@
-const cheerio = require('cheerio');
+const { toUpper } = require('lodash');
 const request = require('request');
-const { upperFirst } = require('lodash');
 
-const url = 'http://www.op.gg/champion/';
+const urlChamp = 'http://www.op.gg/champions/';
+const urlModes = 'http://www.op.gg/modes/';
+const positions = ["top", 'mid', "jungle", "adc", "support"];
+const gameModes = ["aram", "urf"];
 
-function extractRunePagesFromElement($, champion, position) {
-  const getPerkIdFromImg = (_, elem) =>
-    $(elem)
-      .attr('src')
-      .split('/')
-      .slice(-1)
-      .pop()
-      .split('.')[0];
-
-  return (runePageElement, index) => {
-    const stats = $(runePageElement)
-      .find('.champion-overview__stats strong')
-      .map((i, elem) => $(elem).text())
-      .get();
-
-    const name = `${champion} ${upperFirst(position)} PR${stats[0]} WR${stats[1]}`;
-
-    // normal runes
-    let selectedPerkIds = $(runePageElement)
-      .find('.champion-overview__data .perk-page .perk-page__item--active img')
-      .map(getPerkIdFromImg)
-      .get();
-
-    // stat shards
-    selectedPerkIds = selectedPerkIds.concat(
-      $(runePageElement)
-        .find('.champion-overview__data .fragment-page img.active')
-        .map(getPerkIdFromImg)
-        .get()
-    );
-
-    // Convert all string ids to int ids as otherwise the prepareRunePage will fail later.
-    selectedPerkIds = selectedPerkIds.map( x => parseInt(x));
-
-    return {
-      name,
-      selectedPerkIds: selectedPerkIds,
-      bookmark: {
-        src: url + champion + '/statistics/' + position,
-        meta: {
-          pageType: index,
-          champion
-        },
-        remote: {
-          name: 'OP.GG',
-          id: 'opgg'
-        }
-      }
-    };
-  };
+function extractSinglePage(html, champion, name,pageIndex, buildIndex, src){
+  const runeIds = [];
+  const data = extractJSON(html); data["rune_pages"][pageIndex]["builds"][buildIndex]["primary_rune_ids"].forEach((id) => runeIds.push(id));
+  data["rune_pages"][pageIndex]["builds"][buildIndex]["secondary_rune_ids"].forEach((id) => runeIds.push(id));
+  data["rune_pages"][pageIndex]["builds"][buildIndex]["stat_mod_ids"].forEach((id) => runeIds.push(id));
+  return buildPluginObject(name,src,pageIndex, buildIndex,runeIds, champion);
 }
 
-function parsePage($, champion, position) {
-  return $("tbody[class*='ChampionKeystoneRune-'] tr")
-    .toArray()
-    .map(extractRunePagesFromElement($, champion, position));
-}
-
-function parseSinglePage($, champion, position, pageType) {
-  const element = $("tbody[class*='ChampionKeystoneRune-'] tr").get(pageType);
-  return extractRunePagesFromElement($, champion, position)(element, pageType);
-}
-
-function extractPages(html, champion, callback) {
-  const $ = cheerio.load(html);
-  let pages = [];
-  let initialPosition;
-
-  const positions = $('.champion-stats-position li')
-    .map((_, element) => {
-      if (element.attribs['class'].indexOf('champion-stats-header__position--active') !== -1) {
-        initialPosition = element.attribs['data-position'].toLowerCase();
-      }
-
-      return element.attribs['data-position'].toLowerCase();
-    })
-    .get();
-
-  pages = pages.concat(parsePage($, champion, initialPosition));
-
-  positions.splice(positions.indexOf(initialPosition), 1);
-
-  if (positions.length) {
-    positions.forEach((position, index) => {
-      const opggUrl = url + champion + '/statistics/' + position;
-      request.get(opggUrl, (error, response, newHtml) => {
-        if (!error && response.statusCode === 200) {
-          pages = pages.concat(parsePage(cheerio.load(newHtml), champion, position));
-          if (index === positions.length - 1) {
-            callback(pages);
+function extractPages(data, champion, position,gameMode,src,callback) {
+  let runeIds = [];
+  if(data["rune_pages"].length){
+    const limitPages = data["rune_pages"].length < 2? data["rune_pages"].length : 2;
+    for (let i = 0; i < limitPages; i++) {
+        for (let j = 0; j < 1; j++) {
+          try {
+                data["rune_pages"][i]["builds"][j]["primary_rune_ids"].forEach((id) => runeIds.push(id));
+                data["rune_pages"][i]["builds"][j]["secondary_rune_ids"].forEach((id) => runeIds.push(id));
+                data["rune_pages"][i]["builds"][j]["stat_mod_ids"].forEach((id) => runeIds.push(id));
+                callback(buildPluginObject((gameMode? "["+ toUpper(gameMode) + "]" : "[NORMAL]" ) + champion +" "+ toUpper(position) +" Wins "+ data["rune_pages"][i]["builds"][j]["win"] +" "+ data["meta"]['runePages'].filter((page) => page["id"] ==data["rune_pages"][i]["builds"][j].primary_page_id )[0]["name"],src,i, j,runeIds, champion));
+          } catch (error) {
+            callback(undefined);
           }
+          runeIds = [];
         }
-      });
-    });
+      }
   } else {
-    callback(pages);
+    callback(undefined);
   }
 }
 
-function _getPages(champion, callback) {
+function _getPages(champion, callback) { 
   const runePages = { pages: {} };
-
-  const entryChampUrl = url + champion;
-  request.get(entryChampUrl, (error, response, html) => {
-    if (!error && response.statusCode === 200) {
-      extractPages(html, champion, pages => {
-        pages.forEach(page => {
-          runePages.pages[page.name] = page;
-        });
+  positions.forEach((pos) =>{
+    let url =urlChamp +"/" + champion +"/" + pos + "/build";
+    request.get(url, (error, response, html) =>{
+      if (!error && response.statusCode === 200) {
+        extractPages(extractJSON(html), champion,pos,"",url,page => {
+        if( page != undefined) runePages.pages[page.name] = page;
         callback(runePages);
-      });
-    } else {
+        })
+      } else {
       callback(runePages);
       throw Error('rune page not loaded');
-    }
+    }});
+  });
+  gameModes.forEach((mode) => {
+    let url = urlModes +"/"+ mode+"/"+ champion + "/build"
+    request.get(url, (error, response, html) =>{
+      if (!error && response.statusCode === 200) {
+        extractPages(extractJSON(html), champion,"",mode,url ,page => {
+        if( page != undefined) runePages.pages[page.name] = page;
+        callback(runePages);
+        })
+      }else {
+      callback(runePages);
+      throw Error('rune page not loaded');
+    }});
   });
 }
-
+function extractJSON(html){
+  let str = html.slice(html.indexOf('>{') + 1, html.indexOf('}</script>') +1)
+  str = '{ "'+str.slice(str.indexOf('"props'), str.length -1).slice(str.indexOf("__N_SSP"), str.length -1).slice(str.indexOf('pageProps'), str.length - 1);
+  str = str.substring(0, str.indexOf('}},"page') + 1).slice(str.indexOf(':{')+1, str.length -1);
+  str = str.substring(0,str.indexOf('"_nextI18Next"') - 1);
+  return JSON.parse(str);
+}
+function buildPluginObject(name, src,pageIndex,buildIndex, runeIds,champion){
+  return {
+            name,
+            selectedPerkIds: runeIds,
+            bookmark: {
+                name,
+                src,
+                meta: {
+                  pageIndex,
+                  buildIndex,
+                  champion
+                },
+                remote: {
+                  name: 'OP.GG',
+                  id: 'opgg'
+                }
+            }
+          }
+}
 const plugin = {
   id: 'opgg',
   name: 'OP.GG',
@@ -133,15 +102,7 @@ const plugin = {
   syncBookmark(bookmark, callback) {
     request.get(bookmark.src, (error, response, html) => {
       if (!error && response.statusCode == 200) {
-        const position = bookmark.src.split('/').pop();
-        callback(
-          parseSinglePage(
-            cheerio.load(html),
-            bookmark.meta.champion,
-            position,
-            bookmark.meta.pageType
-          )
-        );
+        callback(extractSinglePage(html, bookmark.meta.champion, bookmark.name , bookmark.meta.pageIndex,bookmark.meta.buildIndex, bookmark.src));
       } else {
         throw Error('rune page not loaded');
       }
