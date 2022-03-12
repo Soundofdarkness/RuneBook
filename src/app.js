@@ -353,7 +353,7 @@ freezer.on('page:upload', (champion, pagename) => {
 });
 //upload items to client
 freezer.on("items:upload", (champ, role, map, itemset) => {
-	forgeItemSet(champ.replace(/^\w/, (c) => c.toUpperCase()), role, map, itemset.raw_data);
+	forgeItemSet(champ.replace(/^\w/, (c) => c.toUpperCase()), role, map, itemset);
 });
 
 //delete item set
@@ -547,6 +547,7 @@ function getPagesWrapper(plugin, champion, callback) {
 
 			// Take over sorting from "prepareRunePage" (if not sorted correctly by plugin)
 			res.pages[key].selectedPerkIds = res.pages[key].prepareRunePage.selectedPerkIds;
+			// Checks if the plugin exports itemset
 		});
 
 		// Return
@@ -728,6 +729,25 @@ function getPathForItemSet(champ) {
 	else {
 		return path = freezer.get().configfile.leaguepath.replace("LeagueClient.exe", "") + `Config\\Champions\\${champ}\\Recommended\\`;
 	}
+}
+
+/**
+ * A helper methode to get the name of an item per id
+ * @param {object} runesJson The object that contains the page and item set info
+ * @param {string} key The key to get from the object
+ * @returns An array of item names or an empty array if the key wasn't found
+ */
+function getItemArray(runesJson, key) {
+	const itemsmap = freezer.get().itemsinfo;
+	if (runesJson["stats"][key].build != null) {
+		return runesJson["stats"][key].build.map((item) => {
+			try {
+				return itemsmap[item].name;
+			} catch (error) {
+				return "Unknown Item";
+			}
+		});
+	} else return [];
 }
 
 /**
