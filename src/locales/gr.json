@@ -45,5 +45,7 @@
   "settings.favautoupload.tooltip": "Automatically upload favorite page to client after champion is locked in",
   "currentpage.retry": "Προσπάθησε ξανά",
   "settings.about": "Αναφορικά",
-  "settings.madeby": "Δημιουργήθηκε από"
+  "settings.madeby": "Δημιουργήθηκε από",
+  "game.autoaccept": "Auto accept",
+  "game.autoaccept.tooltip": "When you're in the queue for a match, RuneBook will automatically accept the macht when one is found."
 }

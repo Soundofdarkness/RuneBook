@@ -45,5 +45,7 @@
   "settings.favautoupload.tooltip": "Автоматически загружать избранную страницу после выбора чемпиона",
   "currentpage.retry": "Обновить",
   "settings.about": "Об авторе",
-  "settings.madeby": "Разработчик: "
+  "settings.madeby": "Разработчик: ",
+  "game.autoaccept": "Auto accept",
+  "game.autoaccept.tooltip": "When you're in the queue for a match, RuneBook will automatically accept the macht when one is found."
 }

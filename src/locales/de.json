@@ -53,5 +53,7 @@
   "items.show_items": "Zeige Itemset an",
   "items.upload_items": "Das Itemset in den LeagueClient laden",
   "items.delete_items": "Das Itemset löschen",
-  "items.emptyCategory": "Es sieht so aus als gäbe es keine Items in dieser Kategorie"
+  "items.emptyCategory": "Es sieht so aus als gäbe es keine Items in dieser Kategorie",
+  "game.autoaccept": "Automatisch ein Match akzeptieren",
+  "game.autoaccept.tooltip": "Wenn du in die Matchsuche gehst und diese Option an hast, wird RuneBook automatisch ein Match akzeptieren sobald eins gefunden wurde."
 }
