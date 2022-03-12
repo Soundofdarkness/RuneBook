@@ -418,10 +418,9 @@ freezer.on('/lol-champ-select/v1/session:Delete', () => {
 
 freezer.on('/lol-gameflow/v1/gameflow-phase:Update', (data) => {
 	const store = freezer.get();
-	console.log(data)
 	if (store.autoaccept) {
 		if (data.toString() == 'ReadyCheck') {
-			api.post('/lol-matchmaking/v1/ready-check/accept').then((res) => console.log(res))
+			api.post('/lol-matchmaking/v1/ready-check/accept');
 		}
 	}
 });
@@ -438,7 +437,6 @@ freezer.on("autoaccept:disable", () => {
 });
 
 freezer.on('/lol-champ-select/v1/session:Update', (data) => {
-	console.log(data);
 	if (freezer.get().champselect.gameMode === null) {
 		api.get('/lol-gameflow/v1/session').then((gameflowData) => {
 			freezer.get().champselect.set({ gameMode: gameflowData.gameData.queue.gameMode });
@@ -491,7 +489,6 @@ function handleChampionUpdate(data) {
 
 function handleFavPageUpload(championId) {
 	var state = freezer.get();
-	console.log(state);
 	var champions = state.championsinfo;
 	var champion = Object.keys(champions).find((el) => champions[el].key == championId);
 
