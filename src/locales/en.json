@@ -53,6 +53,7 @@
   "items.show_items": "Show item set",
   "items.upload_items": "Upload item set",
   "items.delete_items": "Delete item set",
+  "items.emptyCategory": "Looks like there aren't any items in this category for the selected Champ",
   "game.autoaccept": "Auto accept",
   "game.autoaccept.tooltip": "When you're in the queue for a match, RuneBook will automatically accept the macht when one is found."
 }
