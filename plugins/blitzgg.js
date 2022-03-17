@@ -3,15 +3,15 @@ const { removePerkIds } = require('./utils');
 
 // #region Settings
 const supported_modes = [{
-        key: 420,
-        name: "Ranked",
-        tier: 'PLATINUM_PLUS'
-    },
-    {
-        key: 450,
-        name: 'ARAM',
-        tier: '',
-    }
+    key: 420,
+    name: "Ranked",
+    tier: 'PLATINUM_PLUS'
+},
+{
+    key: 450,
+    name: 'ARAM',
+    tier: '',
+}
 ];
 
 const baseApiUrl = 'https://league-champion-aggregate.iesdev.com';
@@ -48,15 +48,15 @@ async function getChampionsJsonAsync(championId, gameMode, position = null, useA
 
         // Query URL and get the result
         var result = await rp({
-                uri: requestUri,
-                json: true
-            })
-            .then(function(response) {
+            uri: requestUri,
+            json: true
+        })
+            .then(function (response) {
                 // precheck if data is present (currently blitz.gg sends an empty array if no data is present)
-                if(response["data"] && response["data"].length > 0)
+                if (response["data"] && response["data"].length > 0)
                     return response;
             })
-            .catch(function(err) {
+            .catch(function (err) {
                 if (err.statusCode === 400 || err.statusCode === 403 || err.statusCode === 404 || err.statusCode === 500)
                     console.log("JSON was not found => " + err);
                 else if (err.statusCode === 418) {
@@ -94,10 +94,6 @@ function getPage(runesJson, champInfo, gameMode) {
 
         // Determine selected perk ids
         const selectedPerkIds = removePerkIds(perksData).concat(statShards);
-        //gets an array for with items name for every category
-        const start_items = getItemArray(runesJson, "most_common_starting_items");
-        const core_items = getItemArray(runesJson, "most_common_core_builds");
-        const big_items = getItemArray(runesJson, "most_common_big_item_builds");
         // Return rune page
         return {
             name: `[${gameMode.name}] ${champInfo.name} ${runesJson.role}`.trim(),
@@ -112,37 +108,14 @@ function getPage(runesJson, champInfo, gameMode) {
                 }
             },
             itemSet: {
-                start_items: start_items,
-                core_items: core_items,
-                big_items: big_items,
-                raw_data: {
                 start_items: runesJson["stats"]["most_common_starting_items"],
                 core_items: runesJson["stats"]["most_common_core_builds"],
                 big_items: runesJson["stats"]["most_common_big_item_builds"],
-                },
             },
         };
     } catch (e) {
         throw Error(e);
     }
-}
-/**
- * A helper methode to get the name of an item per id
- * @param {object} runesJson The object that contains the page and item set info
- * @param {string} key The key to get from the object
- * @returns An array of item names or an empty array if the key wasn't found
- */
-function getItemArray(runesJson, key) {
-  const itemsmap = freezer.get().itemsinfo;
-  if (runesJson["stats"][key].build != null) {
-    return runesJson["stats"][key].build.map((item) => {
-      try {
-        return itemsmap[item].name;
-      } catch (error) {
-        return "Unknown Item";
-      }
-    });
-  } else return [];
 }
 /**
  * Determines all possible rune pages for a given champion for the specified game mode.
@@ -201,7 +174,7 @@ async function _getPagesAsync(champion, callback) {
 
         // sort rune pages based on the key (name)
         const ordered = {};
-        Object.keys(runePages.pages).sort().forEach(function(key) {
+        Object.keys(runePages.pages).sort().forEach(function (key) {
             ordered[key] = runePages.pages[key];
         });
         runePages.pages = ordered;
@@ -241,7 +214,7 @@ async function _getPagesAsync(champion, callback) {
 
         // sort rune pages based on the key (name)
         const ordered = {};
-        Object.keys(runePages.pages).sort().forEach(function(key) {
+        Object.keys(runePages.pages).sort().forEach(function (key) {
             ordered[key] = runePages.pages[key];
         });
         runePages.pages = ordered;
