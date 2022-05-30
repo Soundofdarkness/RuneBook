@@ -6,7 +6,7 @@ const { removePerkIds } = require('./utils');
 const supported_modes = [
     {
         role: ["MID","SUPPORT","ADC","JUNGLE","TOP"],
-        queue: "RANKED_FLEX_SR",
+        queue: "RANKED_SOLO_5X5",
 
     },
     {
