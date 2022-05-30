@@ -154,10 +154,8 @@ async function _getPagesAsync(champion, callback) {
         const runePages = {
             pages: {}
         };
-        console.log(supported_modes)
         // Iterate through supported_modes
         for (const gameMode of supported_modes){
-            console.log(gameMode);
             if (gameMode.role == null){
                 page = await getPagesForGameModeAsync(champInfo, gameMode.queue,null)
                 runePages.pages[page.name] = page
@@ -169,13 +167,11 @@ async function _getPagesAsync(champion, callback) {
             }
         }
         // sort rune pages based on the key (name)
-        console.log(runePages)
         const ordered = {};
         Object.keys(runePages.pages).sort().forEach(function (key) {
             ordered[key] = runePages.pages[key];
         });
         runePages.pages = ordered;
-        console.log(runePages)
         // return rune pages
         callback(runePages);
     } catch (e) {
