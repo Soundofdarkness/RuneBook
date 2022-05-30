@@ -83,7 +83,7 @@ function getPage(runesJson, champInfo, queue, role) {
         // Break Json down to the perks data and stat shards
         const perksData = runesJson["runes"];
         //const statShards = runesJson["championBuildStats"]["most_common_rune_stat_shards"]["build"];
-
+        perksData.push(runesJson["primaryRune"]);
         // Determine selected perk ids
         const selectedPerkIds = removePerkIds(perksData.map(runeInfo =>  runeInfo.runeId));//.concat(statShards);
         // Return rune page
@@ -99,9 +99,9 @@ function getPage(runesJson, champInfo, queue, role) {
                 }
             },
             itemSet: {
-                start_items: runesJson["startingItems"],
-                core_items: runesJson["completedItems"].sort((a, b) => (a.index < b.index ? 1 : -1)),
-                big_items: [runesJson["mythicId"]],
+                start_items: {"build" :runesJson["startingItems"][0]["startingItemIds"]},
+                core_items:  {"build" :runesJson["completedItems"].sort((a, b) => (a.index < b.index ? 1 : -1)).map(itemInfo => itemInfo.itemId)},
+                big_items:  {"build" :[runesJson["mythicId"]]},
             },
         };
     } catch (e) {
@@ -131,6 +131,7 @@ async function getPagesForGameModeAsync(champInfo, queue, role) {
     } catch (e) {
         throw Error(e);
     }
+    console.log(returnVal);
     // Return list of the rune page
     return returnVal;
 }
