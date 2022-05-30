@@ -131,7 +131,6 @@ async function getPagesForGameModeAsync(champInfo, queue, role) {
     } catch (e) {
         throw Error(e);
     }
-    console.log(returnVal);
     // Return list of the rune page
     return returnVal;
 }
