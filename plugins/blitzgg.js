@@ -82,22 +82,47 @@ function getPage(runesJson, champInfo, queue, role) {
     try {
         // Break Json down to the perks data and stat shards
         const perksData = runesJson["runes"];
-        // console.log(perksData);
+        console.log(perksData);
 
         const runes = [];
+        let tree = 0;
         // Select highest winrate out of all options (unfortunately sofar I think I have to ignore how many matches are played, since that would need better evaluation)
         for(let i = 0; i < 8; i++){
             // Grab candidates for each slot and calculate their winrate
-            const candidates = perksData.filter(x => x.index === i).map(x => {
+            let candidatesPre = perksData.filter(x => x.index === i).map(x => {
                 const wr = x.wins / x.games;
                 x.winrate = wr;
                 return x;
             });
+            let candidates = [];
+
+            // If the second perk of the second tree => only allow candidates of the same tree
+            if(i === 4){
+                candidates = candidatesPre.filter(x => x.treeId === tree);
+                console.log("found "  + candidates.length);
+                console.log(candidates);
+            }
+            else {
+                candidates = candidatesPre;
+            }
             // Select the highest winrate
-            const highestWr = candidates.reduce((prev, curr) => (prev.winrate > curr.winrate) ? prev : curr);
+            let highestWr;
+            try {
+                highestWr = candidates.reduce((prev, curr) => (prev.winrate > curr.winrate) ? prev : curr);
+            }
+            catch(e){
+                // Seems to happen in rare cases with api bugs ? 
+                highestWr = {runeId: 0};
+            }
+
+            // store the treeId
+            if(i === 3){
+                tree = highestWr.treeId;
+            }
             // Return only the ID
             runes.push(highestWr.runeId);
         }
+
 
         //const statShards = runesJson["championBuildStats"]["most_common_rune_stat_shards"]["build"];
         
