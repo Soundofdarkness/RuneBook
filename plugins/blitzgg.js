@@ -16,7 +16,7 @@ const supported_modes = [
 ];
 const friendly_names = {
     "HOWLING_ABYSS_ARAM": "ARAM",
-    "RANKED_FLEX_SR":" RANKED FLEX",
+    "RANKED_SOLO_5X5": "Ranked",
 }
 baseUrl = 'https://league-champion-aggregate.iesdev.com/graphql?query=query ChampionBuilds($championId:Int!,$queue:Queue!,$role:Role,$opponentChampionId:Int,$key:ChampionBuildKey){championBuildStats(championId:$championId,queue:$queue,role:$role,opponentChampionId:$opponentChampionId,key:$key){championId opponentChampionId queue role builds{completedItems{games index averageIndex itemId wins}games mythicId mythicAverageIndex primaryRune runes{games index runeId wins treeId}skillOrders{games skillOrder wins}startingItems{games startingItemIds wins}summonerSpells{games summonerSpellIds wins}wins}}}&variables='
 
@@ -82,13 +82,40 @@ function getPage(runesJson, champInfo, queue, role) {
     try {
         // Break Json down to the perks data and stat shards
         const perksData = runesJson["runes"];
+        // console.log(perksData);
+
+        const runes = [];
+        // Select highest winrate out of all options (unfortunately sofar I think I have to ignore how many matches are played, since that would need better evaluation)
+        for(let i = 0; i < 8; i++){
+            // Grab candidates for each slot and calculate their winrate
+            const candidates = perksData.filter(x => x.index === i).map(x => {
+                const wr = x.wins / x.games;
+                x.winrate = wr;
+                return x;
+            });
+            // Select the highest winrate
+            const highestWr = candidates.reduce((prev, curr) => (prev.winrate > curr.winrate) ? prev : curr);
+            // Return only the ID
+            runes.push(highestWr.runeId);
+        }
+
         //const statShards = runesJson["championBuildStats"]["most_common_rune_stat_shards"]["build"];
-        perksData.push(runesJson["primaryRune"]);
+        
+        // Add the primary rune 
+        runes.push(runesJson["primaryRune"]);
+         //console.log(runesJson["primaryRune"]);
         // Determine selected perk ids
-        const selectedPerkIds = removePerkIds(perksData.map(runeInfo =>  runeInfo.runeId));//.concat(statShards);
+        const selectedPerkIds = removePerkIds(runes);//.concat(statShards);
+        // console.log(selectedPerkIds);
+        // Determine if a role exists (for display purposes, otherwise ARAM would show "null" as role.)
+        let roleString = role ? role : "";
+
+        // And capitalize it for consistency (should not care in case its an empty string)
+        roleString = roleString.charAt(0).toUpperCase() + roleString.slice(1).toLowerCase();
+
         // Return rune page
         return {
-            name: `[${friendly_names[queue]}] ${champInfo.name} ${role}`.trim(),
+            name: `[${friendly_names[queue]}] ${champInfo.name} ${roleString}`.trim(),
             selectedPerkIds: selectedPerkIds,
             bookmark: {
                 champId: champInfo.id,
