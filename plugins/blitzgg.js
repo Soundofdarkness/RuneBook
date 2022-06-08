@@ -2,80 +2,71 @@ const rp = require('request-promise-native');
 const { removePerkIds } = require('./utils');
 
 // #region Settings
-const supported_modes = [{
-    key: 420,
-    name: "Ranked",
-    tier: 'PLATINUM_PLUS'
-},
-{
-    key: 450,
-    name: 'ARAM',
-    tier: '',
-}
-];
+// No longer supported
+const supported_modes = [
+    {
+        role: ["MID","SUPPORT","ADC","JUNGLE","TOP"],
+        queue: "RANKED_SOLO_5X5",
 
-const baseApiUrl = 'https://league-champion-aggregate.iesdev.com';
-const baseApiUrlAlt = 'https://backend-alt.iesdev.com';
-const usedRegion = 'world';
+    },
+    {
+        role: null,
+        queue: 'HOWLING_ABYSS_ARAM',
+    }
+];
+const friendly_names = {
+    "HOWLING_ABYSS_ARAM": "ARAM",
+    "RANKED_FLEX_SR":" RANKED FLEX",
+}
+baseUrl = 'https://league-champion-aggregate.iesdev.com/graphql?query=query ChampionBuilds($championId:Int!,$queue:Queue!,$role:Role,$opponentChampionId:Int,$key:ChampionBuildKey){championBuildStats(championId:$championId,queue:$queue,role:$role,opponentChampionId:$opponentChampionId,key:$key){championId opponentChampionId queue role builds{completedItems{games index averageIndex itemId wins}games mythicId mythicAverageIndex primaryRune runes{games index runeId wins treeId}skillOrders{games skillOrder wins}startingItems{games startingItemIds wins}summonerSpells{games summonerSpellIds wins}wins}}}&variables='
+
 // #endregion
 
 /**
  * Get the Champions-JSON from the BLITZ.GG-API.
  * 
  * @param {number} championId Id of the champion for which the data should be determined.
- * @param {string} gameMode The game mode for which the rune pages should be determined.
- * @param {string} position The position for which the rune pages should be determined.
- * @param {string} useAltApi Specifies whether to try the alternate server.
+ * @param {string} queue The queue aka mode pages should be determined.
+ * @param {string} roleThe position for which the rune pages should be determined.
  * @returns The full Champions-JSON for the champion in the specified game mode.
  */
-async function getChampionsJsonAsync(championId, gameMode, position = null, useAltApi = false) {
-    // Try the last two LOL versions (this is necessary because Blitz.GG is currently updating with a delay on Patch-Day)
-    for (const lolVersion of freezer.get().lolversions.slice(0, 2)) {
-        // Convert LOL version into a format suitable for BLITZ.GG
-        const blitzggLoLVersion = lolVersion.split('.').splice(0, 2).join('.');
+async function getChampionsJsonAsync(championId, queue, role) {
+    // Create URL based on the parameters
+    if (role == null){
+        var requestUri = baseUrl + `{"championId":${championId},"queue":"${queue}","opponentChampionId":null,"key":"PUBLIC"}`
+    }
+    else{
+        var requestUri = baseUrl + `{"championId":${championId},"role":"${role}","queue":"${queue}","opponentChampionId":null,"key":"PUBLIC"}`
 
-        // Determine server URL
-        var usedServerUrl = useAltApi ? baseApiUrlAlt : baseApiUrl;
-
-        // Create URL based on the parameters
-        var requestUri = `${usedServerUrl}/api/champions/${championId}?patch=${blitzggLoLVersion}&queue=${gameMode.key}&region=${usedRegion}`;
-
-        // add additional parameters
-        if (position)
-            requestUri += `&role=${position}`;
-        if (gameMode.tier)
-            requestUri += `&tier=${gameMode.tier}`;
-
-        // Query URL and get the result
-        var result = await rp({
-            uri: requestUri,
-            json: true
-        })
-            .then(function (response) {
-                // precheck if data is present (currently blitz.gg sends an empty array if no data is present)
-                if (response["data"] && response["data"].length > 0)
-                    return response;
-            })
-            .catch(function (err) {
-                if (err.statusCode === 400 || err.statusCode === 403 || err.statusCode === 404 || err.statusCode === 500)
-                    console.log("JSON was not found => " + err);
-                else if (err.statusCode === 418) {
-                    // If the altenative server has not been tried yet, do it. Otherwise only output error
-                    if (useAltApi === false)
-                        result = getChampionsJsonAsync(championId, gameMode, position, true);
-                    else
-                        console.log("API-Error => " + err);
-                } else
-                    throw Error("Error when determining json => " + err);
-            });
-
-        // is there a result? => return result
-        if (result)
-            return result
     }
 
-    // fallback
-    return null;
+    // Query URL and get the result
+    var result = await rp({
+        uri: requestUri,
+        json: true
+    })
+        .then(function (response) {
+            if (response["errors"] != undefined)
+                throw response["errors"][0]["message"]
+            // precheck if data is present (currently blitz.gg sends an empty array if no data is present)
+            if (response["data"] != null)
+                return response["data"]["championBuildStats"]["builds"][0];
+        })
+        .catch(function (err) {
+            if (err.statusCode === 400 || err.statusCode === 403 || err.statusCode === 404 || err.statusCode === 500)
+                console.log("JSON was not found => " + err);
+            else if (err.statusCode === 418) {
+                // If the altenative server has not been tried yet, do it. Otherwise only output error
+                if (useAltApi === false)
+                    result = getChampionsJsonAsync(championId, gameMode, position, true);
+                else
+                    console.log("API-Error => " + err);
+            } else
+                throw Error("Error when determining json => " + err);
+        });
+    // is there a result? => return result
+    if (result)
+        return result
 }
 
 /**
@@ -83,34 +74,34 @@ async function getChampionsJsonAsync(championId, gameMode, position = null, useA
  * 
  * @param {string} runesJson Blitz.GG JSON that is being processed.
  * @param {string} champion Name of the champion for which the page should be determined.
- * @param {string} gameMode The game mode for which the rune page should be determined.
+ * @param {string} queue The queue for which the rune page should be determined.
+ * @param {string} role The role for which the page should be determined.
  * @returns A rune page matches the given parameters.
  */
-function getPage(runesJson, champInfo, gameMode) {
+function getPage(runesJson, champInfo, queue, role) {
     try {
         // Break Json down to the perks data and stat shards
-        const perksData = runesJson["stats"]["most_common_runes"]["build"];
-        const statShards = runesJson["stats"]["most_common_rune_stat_shards"]["build"];
-
+        const perksData = runesJson["runes"];
+        //const statShards = runesJson["championBuildStats"]["most_common_rune_stat_shards"]["build"];
+        perksData.push(runesJson["primaryRune"]);
         // Determine selected perk ids
-        const selectedPerkIds = removePerkIds(perksData).concat(statShards);
+        const selectedPerkIds = removePerkIds(perksData.map(runeInfo =>  runeInfo.runeId));//.concat(statShards);
         // Return rune page
         return {
-            name: `[${gameMode.name}] ${champInfo.name} ${runesJson.role}`.trim(),
+            name: `[${friendly_names[queue]}] ${champInfo.name} ${role}`.trim(),
             selectedPerkIds: selectedPerkIds,
             bookmark: {
                 champId: champInfo.id,
-                gameModeKey: gameMode.key,
-                position: runesJson.role,
+                position: role? role: "ARAM",
                 remote: {
                     name: plugin.name,
                     id: plugin.id
                 }
             },
             itemSet: {
-                start_items: runesJson["stats"]["most_common_starting_items"],
-                core_items: runesJson["stats"]["most_common_core_builds"],
-                big_items: runesJson["stats"]["most_common_big_item_builds"],
+                start_items: {"build" :runesJson["startingItems"][0]["startingItemIds"]},
+                core_items:  {"build" :runesJson["completedItems"].sort((a, b) => (a.index < b.index ? 1 : -1)).map(itemInfo => itemInfo.itemId)},
+                big_items:  {"build" :[runesJson["mythicId"]]},
             },
         };
     } catch (e) {
@@ -121,29 +112,25 @@ function getPage(runesJson, champInfo, gameMode) {
  * Determines all possible rune pages for a given champion for the specified game mode.
  * 
  * @param {string} champion Name of the champion for which the pages should be determined.
- * @param {string} gameMode The game mode for which the rune pages should be determined.
- * @param {number} force_position Returns the position to which the data is to be returned. In case of NULL all are returned.
+ * @param {string} queue The name of the queue for which the pages should be determined.
+ * @param {string} role The name of the role for which the pages should be determined.
  * @returns all possible rune pages for a particular champion for the specified game mode.
  */
-async function getPagesForGameModeAsync(champInfo, gameMode, force_position = null) {
+async function getPagesForGameModeAsync(champInfo, queue, role) {
     // Return variable (List of rune pages)
-    var returnVal = [];
-
+    var returnVal = {};
     try {
         // get json for the given champ and game mode
-        var result = await getChampionsJsonAsync(champInfo.key, gameMode, force_position);
+        var result = await getChampionsJsonAsync(champInfo.key, queue, role);
 
         // if a result was found, parse it and add it to the return
         if (result) {
-            // Determine all possible pages
-            for (const champInfoJson of result["data"]) {
-                returnVal.push(getPage(champInfoJson, champInfo, gameMode));
-            }
+            // Determine possible page
+            returnVal= getPage(result, champInfo, queue, role);
         }
     } catch (e) {
         throw Error(e);
     }
-
     // Return list of the rune page
     return returnVal;
 }
@@ -164,21 +151,27 @@ async function _getPagesAsync(champion, callback) {
     const champInfo = freezer.get().championsinfo[champion];
 
     try {
-        // go through all supported game modes
-        for (const gameMode of supported_modes) {
-            // determine rune pages for the respective game mode and add them to the return
-            for (const runePage of await getPagesForGameModeAsync(champInfo, gameMode)) {
-                runePages.pages[runePage.name] = runePage;
+        const runePages = {
+            pages: {}
+        };
+        // Iterate through supported_modes
+        for (const gameMode of supported_modes){
+            if (gameMode.role == null){
+                page = await getPagesForGameModeAsync(champInfo, gameMode.queue,null)
+                runePages.pages[page.name] = page
+            }else{
+                for (const role of gameMode.role){
+                    page = await getPagesForGameModeAsync(champInfo, gameMode.queue, role)
+                    runePages.pages[page.name] = page
+                }
             }
         }
-
         // sort rune pages based on the key (name)
         const ordered = {};
         Object.keys(runePages.pages).sort().forEach(function (key) {
             ordered[key] = runePages.pages[key];
         });
         runePages.pages = ordered;
-
         // return rune pages
         callback(runePages);
     } catch (e) {
@@ -188,45 +181,7 @@ async function _getPagesAsync(champion, callback) {
     }
 }
 
-/**
- * Determines all possible rune pages for a particular champion for all supported game modes.
- * 
- * @param {string} champion Id of the champion for which the pages should be determined.
- * @param callback callback which is called for the return of the data.
- * @returns all possible rune pages for a particular champion for all supported game modes.
- */
-async function _getPagesAsync(champion, callback) {
-    const runePages = {
-        pages: {}
-    };
 
-    // Determine champion information based on the name
-    const champInfo = freezer.get().championsinfo[champion];
-
-    try {
-        // go through all supported game modes
-        for (const gameMode of supported_modes) {
-            // determine rune pages for the respective game mode and add them to the return
-            for (const runePage of await getPagesForGameModeAsync(champInfo, gameMode)) {
-                runePages.pages[runePage.name] = runePage;
-            }
-        }
-
-        // sort rune pages based on the key (name)
-        const ordered = {};
-        Object.keys(runePages.pages).sort().forEach(function (key) {
-            ordered[key] = runePages.pages[key];
-        });
-        runePages.pages = ordered;
-
-        // return rune pages
-        callback(runePages);
-    } catch (e) {
-        // In case of error, return all rune pages determined up to this point
-        callback(runePages);
-        throw Error(e);
-    }
-}
 
 /**
  * It averages a special rune page based on the given parameters to update the bookmark.
