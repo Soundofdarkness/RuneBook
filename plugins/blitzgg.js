@@ -82,7 +82,6 @@ function getPage(runesJson, champInfo, queue, role) {
     try {
         // Break Json down to the perks data and stat shards
         const perksData = runesJson["runes"];
-        console.log(perksData);
 
         const runes = [];
         let tree = 0;
@@ -99,8 +98,6 @@ function getPage(runesJson, champInfo, queue, role) {
             // If the second perk of the second tree => only allow candidates of the same tree
             if(i === 4){
                 candidates = candidatesPre.filter(x => x.treeId === tree);
-                console.log("found "  + candidates.length);
-                console.log(candidates);
             }
             else {
                 candidates = candidatesPre;
@@ -128,7 +125,6 @@ function getPage(runesJson, champInfo, queue, role) {
         
         // Add the primary rune 
         runes.push(runesJson["primaryRune"]);
-         //console.log(runesJson["primaryRune"]);
         // Determine selected perk ids
         const selectedPerkIds = removePerkIds(runes);//.concat(statShards);
         // console.log(selectedPerkIds);
