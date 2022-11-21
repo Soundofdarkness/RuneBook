@@ -1,7 +1,7 @@
 {
   "name": "runebook",
   "productName": "RuneBook",
-  "version": "1.16.1",
+  "version": "1.16.2",
   "description": "An automatic rune pages manager for League of Legends",
   "main": "./src/main.js",
   "license": "MIT",
@@ -15,11 +15,11 @@
     "start": "electron ./src/main.js",
     "build": "electron-packager . --out=dist --asar --overwrite --all",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder -p onTagOrDraft --win nsis portable",
+    "dist": "electron-builder -p onTagOrDraft --win nsis portable --x64",
     "dist:mac": "electron-builder --mac",
     "dist:win": "electron-builder --win",
     "dist:lin": "electron-builder --linux",
-    "pub:lin": "electron-builder -l AppImage tar.xz -p onTagOrDraft",
+    "pub:lin": "electron-builder -l AppImage tar.xz -p onTagOrDraft --x64",
     "dist:all": "electron-builder -mwl -p onTagOrDraft"
   },
   "build": {
