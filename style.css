@@ -2,30 +2,30 @@
  *** COLOR SCHEMES ***
  */
 
- /* LIGHT theme */
-[data-theme="light"] { 
-  --bg: #ffffff;          /* app background */  
+/* LIGHT theme */
+[data-theme="light"] {
+  --bg: #ffffff; /* app background */
   --bg-accent-1: #f7f7f7; /* some headers */
   --bg-accent-2: #ffffff; /* input fields */
-  --footer: #e4e4e4;      /* settings footer */
+  --footer: #e4e4e4; /* settings footer */
 
-  --primary: #bd9d5e;     /* buttons, borders, icons */
+  --primary: #bd9d5e; /* buttons, borders, icons */
 
-  --header-text: #191d24; 
+  --header-text: #191d24;
   --plain-text: #191d24;
-  
-  --highlight: #00acb1;   /* autoselect, current champ, toggles */
-  --logo-large: #bd9d5e;  /* icons: welcome & no pages */
-  
+
+  --highlight: #00acb1; /* autoselect, current champ, toggles */
+  --logo-large: #bd9d5e; /* icons: welcome & no pages */
+
   /* active/hovered tab, list item */
-  --list-hover: rgba(34,36,38,.1);
-  --menu-hover: rgba(0,0,0,.03);
+  --list-hover: rgba(34, 36, 38, 0.1);
+  --menu-hover: rgba(0, 0, 0, 0.03);
   --menu-active: #d8cfbd;
-  
-  --lang-dropddown-border: 1px solid rgba(34,36,38,.15);
+
+  --lang-dropddown-border: 1px solid rgba(34, 36, 38, 0.15);
 
   /* buttons, scrollbars */
-  --control: #bd9d5e; 
+  --control: #bd9d5e;
   --control-hover: #c7b185;
 
   /* changelog scrollbar */
@@ -33,40 +33,39 @@
   --scrollbar-grey-hover: rgba(0, 0, 0, 0.15);
 
   /* settings/changelog dimmer  */
-  --dimmer-modal: rgba(255,255,255,.80);
-  
+  --dimmer-modal: rgba(255, 255, 255, 0.8);
 }
 
 /* DARK theme */
-[data-theme="dark"] { 
-  --bg: #191d24;          /* app background */
+[data-theme="dark"] {
+  --bg: #191d24; /* app background */
   --bg-accent-1: #121212; /* some headers */
   --bg-accent-2: #121212; /* input fields */
-  --footer: #121212;      /* settings footer */
-  
-  --primary: #bd9d5e;     /* borders, icons */
+  --footer: #121212; /* settings footer */
+
+  --primary: #bd9d5e; /* borders, icons */
 
   --header-text: #bd9d5e;
   --plain-text: #d8cfbd;
 
-  --highlight: #00acb1;   /* autoselect, current champ, toggles */
-  --logo-large: #00acb1;  /* icons: welcome & no pages */
+  --highlight: #00acb1; /* autoselect, current champ, toggles */
+  --logo-large: #00acb1; /* icons: welcome & no pages */
 
   /* active/hovered tab, list item */
   --list-hover: #191d24;
   --menu-hover: #121212aa;
   --menu-active: #121212;
-  
+
   --lang-dropddown-border: none;
 
   /* buttons, scrollbar */
   --control: #71552b;
   --control-hover: #bd9d5e;
-  
+
   /* changelog scrollbar */
   --scrollbar-grey: rgba(255, 255, 255, 0.1);
   --scrollbar-grey-hover: rgba(255, 255, 255, 0.15);
-  
+
   /* settings/changelog dimmer  */
   --dimmer-modal: rgba(40, 42, 42, 0.85);
 }
@@ -116,7 +115,8 @@ chapters-segment > .ui.container {
   flex: 1;
   display: flex;
   flex-direction: column;
-  height: 150px;
+  height: calc(100vh - 460px);
+  max-height: calc(100vh - 373px);
   padding-top: 12px !important;
   overflow: hidden;
   background: var(--bg);
@@ -174,7 +174,6 @@ chapters-segment > .ui.container {
   order: 3;
 }
 
-
 /*** Pagelist placeholders ***/
 
 chapters-segment .ui.active.inverted.dimmer {
@@ -194,8 +193,7 @@ chapters-segment .ui.active.inverted.dimmer {
   color: var(--logo-large) !important;
 }
 
-
-/*** Champion selection ***/ 
+/*** Champion selection ***/
 
 #autochamp-label span {
   color: var(--plain-text);
@@ -263,8 +261,7 @@ input::selection {
   color: var(--plain-text) !important;
 }
 
-
-/*** Tabs ***/ 
+/*** Tabs ***/
 
 #chapters-menu {
   margin-top: 0;
@@ -283,7 +280,8 @@ input::selection {
 
 #chapters-menu .item.active {
   background: var(--menu-active);
-  box-shadow: inset 1px 0px 0px 0px var(--primary), inset -1px 0px 0px 0px var(--primary);
+  box-shadow: inset 1px 0px 0px 0px var(--primary),
+    inset -1px 0px 0px 0px var(--primary);
   color: var(--plain-text);
 }
 
@@ -293,7 +291,6 @@ input::selection {
   border-right: 2px solid var(--primary) !important;
 }
 
-
 /*** Current page ***/
 
 current-page .ui.segment {
@@ -302,19 +299,18 @@ current-page .ui.segment {
 }
 
 current-page .ui.segment .header {
-  color: var(--plain-text) !important
+  color: var(--plain-text) !important;
 }
 
 current-page .ui.segment .header .sub.header {
-  color: var(--plain-text) !important
+  color: var(--plain-text) !important;
 }
 
 current-page .ui.button {
   margin-right: 10px;
 }
 
-
-/*** Buttons, Popups ***/ 
+/*** Buttons, Popups ***/
 
 .ui.button,
 .ui.button:focus {
@@ -348,11 +344,10 @@ current-page .ui.button {
   box-shadow: none !important;
 }
 
-
-/*** Modals ***/ 
+/*** Modals ***/
 
 .ui.dimmer {
-  background: var(--dimmer-modal) !important
+  background: var(--dimmer-modal) !important;
 }
 
 .ui.modal {
@@ -363,8 +358,8 @@ current-page .ui.button {
   background: var(--bg) !important;
 }
 
-.settings-modal .divider.header  > i {
-  padding-right: .5em;
+.settings-modal .divider.header > i {
+  padding-right: 0.5em;
   font-size: 1em;
 }
 
@@ -482,7 +477,7 @@ span > i1-8n,
   display: flex;
   justify-content: space-evenly;
 }
-.item-img{
+.item-img {
   border-radius: 500rem;
   margin-bottom: 1rem;
 }
