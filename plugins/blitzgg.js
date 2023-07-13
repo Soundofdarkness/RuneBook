@@ -166,7 +166,7 @@ function getPage(runesJson, champInfo, queue, role) {
  */
 async function getPagesForGameModeAsync(champInfo, queue, role) {
     // Return variable (List of rune pages)
-    var returnVal = {};
+    var returnVal = null;
     try {
         // get json for the given champ and game mode
         var result = await getChampionsJsonAsync(champInfo.key, queue, role);
@@ -206,11 +206,11 @@ async function _getPagesAsync(champion, callback) {
         for (const gameMode of supported_modes){
             if (gameMode.role == null){
                 page = await getPagesForGameModeAsync(champInfo, gameMode.queue,null)
-                runePages.pages[page.name] = page
+                if (page) { runePages.pages[page.name] = page }
             }else{
                 for (const role of gameMode.role){
                     page = await getPagesForGameModeAsync(champInfo, gameMode.queue, role)
-                    runePages.pages[page.name] = page
+                    if (page) { runePages.pages[page.name] = page }
                 }
             }
         }
