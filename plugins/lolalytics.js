@@ -19,7 +19,7 @@ const runesModeMap = {
     'pick': 'MP',
 };
 
-const baseApiUrl = `https://axe.lolalytics.com`;
+const baseApiUrl = `https://ax.lolalytics.com`;
 const usedTier = 'platinum_plus';
 const usedRegion = 'all';
 // #endregion
